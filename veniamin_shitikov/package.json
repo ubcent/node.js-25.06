@@ -1,0 +1,16 @@
+{
+  "name": "veniamin_shitikov",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Veniamin Shitikov",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "eslint-config-strongloop": "^2.1.0",
+    "prettier": "1.18.2"
+  }
+}
