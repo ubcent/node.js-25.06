@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Color, Text } from 'ink';
-import Statistics from './Statistics';
 import SelectInput from 'ink-select-input';
-import Spinner from 'ink-spinner';
+
 import { randomBoolean } from '../helpers';
 
 const answers = [{
@@ -25,9 +24,7 @@ export default function Play({ onFinish }) {
   };
 
   return (
-		<Box
-      flexDirection="column"
-		>
+    <Box flexDirection="column">
       {!answer
         ? (
           <>
@@ -40,5 +37,5 @@ export default function Play({ onFinish }) {
         )
       }
     </Box>
-	);
+  );
 }

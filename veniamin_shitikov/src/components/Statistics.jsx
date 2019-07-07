@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, Color, Text } from 'ink';
-
+import { Box, Text } from 'ink';
 
 export default function Statistics({ games, win, lose, user }) {
   const fields = [
@@ -23,7 +22,7 @@ export default function Statistics({ games, win, lose, user }) {
    ];
   
   return (
-		<Box flexDirection="column" height={fields.length}>
+    <Box flexDirection="column" height={fields.length}>
       {fields.map(({ title, value }) => (
         <Box key={title} width={20} justifyContent="space-between">
           <Text>{title}</Text>
@@ -31,5 +30,5 @@ export default function Statistics({ games, win, lose, user }) {
         </Box>
       ))}
     </Box>
-	);
+  );
 }

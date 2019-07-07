@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Text } from 'ink';
-import Statistics from './Statistics';
 import SelectInput from 'ink-select-input';
+
+import Statistics from './Statistics';
 import Play from './Play';
 import logger from '../logger';
 
@@ -37,11 +38,7 @@ export default function Game({ user }) {
   if (step === 2) return null;
 
   return (
-		<Box
-      width="100%"
-      height={8}
-      flexDirection="column"
-		>
+    <Box width="100%" height={8} flexDirection="column">
       <Statistics
         user={user}
         games={count}
@@ -60,5 +57,5 @@ export default function Game({ user }) {
         )
       }
     </Box>
-	);
+  );
 }

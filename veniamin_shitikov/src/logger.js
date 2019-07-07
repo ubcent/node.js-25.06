@@ -6,9 +6,9 @@ const logFile = path.resolve(__dirname, 'game.log');
 const newLine = os.EOL;
 
 module.exports = (user, result) => {
-  const message = `${newLine}${user}:${+result}`;
+  const message = `${user}:${+result}${newLine}`;
 
-  fs.appendFile(logFile, message, (err) => {
+  fs.appendFile(logFile, message, err => {
     if (err) console.error(err);
-  })
-}
+  });
+};

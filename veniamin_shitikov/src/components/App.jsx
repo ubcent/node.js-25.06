@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 import { Box, Color, Text } from 'ink';
 import TextInput from 'ink-text-input';
+
 import Game from './Game';
 
 const GAME_NAME = 'ОРЕЛ И РЕШКА';
 
-function App({ exit }) {
+export default function App() {
   const [ready, setReady] = useState(false);
   const [name, setName] = useState('');
-
 
   const handleSubmit = () => {
     if (!name) setName('Гость');
     setReady(true);
-  }
+  };
 
   return (
-		<Box
-      width="90%"
-      height="90%"
-		>
+    <Box>
       {!ready
         ? (
           <>
@@ -38,7 +35,5 @@ function App({ exit }) {
         : <Game user={name} />
       }
     </Box>
-	);
+  );
 }
-
-module.exports = { App };
