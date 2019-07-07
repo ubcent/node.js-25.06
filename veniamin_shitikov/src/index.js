@@ -1,6 +1,10 @@
 const React = require('react');
-const { render, Box } = require('ink');
+const { render, AppContext } = require('ink');
+const { App } = require('./components/App')
 
-const Demo = () => <Box>Hello World</Box>;
 
-render(<Demo />);
+render(
+  <AppContext.Consumer>
+    {() => <App />}
+  </AppContext.Consumer>
+);
