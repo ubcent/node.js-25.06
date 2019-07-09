@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "strongloop",
+    "plugin:react/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+  "rules": {
+    "max-len": [2, 120, 8],
+    "no-multiple-empty-lines": [2, { "max": 1 }],
+    "strict": [2, "never"]
+  }
+}
