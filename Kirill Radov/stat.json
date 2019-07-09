@@ -1,0 +1,337 @@
+[
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 2,
+        "playerWin": false
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 1,
+        "sysChoice": 1,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 2,
+        "playerWin": true
+    },
+    {
+        "userChoice": 2,
+        "sysChoice": 1,
+        "playerWin": false
+    }
+]
