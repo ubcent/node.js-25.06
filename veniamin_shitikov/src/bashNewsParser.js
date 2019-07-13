@@ -5,7 +5,7 @@ const URL = 'https://bash.im/';
 const SEPARATOR = '============================================';
 
 const requestHandler = (err, responce, body) => {
-  if (err || !responce || responce.statusCode !==200) {
+  if (err || !responce || responce.statusCode !== 200) {
     throw new Error('Произошла ошибка при запросе данных!');
   }
 
@@ -14,20 +14,20 @@ const requestHandler = (err, responce, body) => {
   const posts = nodesToArray(postsNodes).slice(1); // skip first
 
   posts.forEach(post => printPost(post, SEPARATOR));
-}
+};
 
 const nodesToArray = nodes => {
-  if (!nodes || ! nodes.length) return [];
+  if (!nodes || !nodes.length) return [];
 
   const resultLength = nodes.length;
-  
+
   return Array.from(new Array(resultLength),
     (_, index) => nodes.eq(index));
-}
+};
 
 const printPost = (post, separator) => {
   post.find('br').replaceWith('\n');
-  postText = post
+  const postText = post
     .text()
     .trim()
     .split('\n')
@@ -37,6 +37,6 @@ const printPost = (post, separator) => {
   console.log(separator);
   console.log(postText);
   console.log(separator);
-}
+};
 
 request(URL, requestHandler);
