@@ -1,5 +1,5 @@
 {
-  "name": "SergeyBelyakov",
+  "name": "sergey_belyakov",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "minimist": "^1.2.0"
-  }
+  "dependencies": {}
 }
