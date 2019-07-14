@@ -11,7 +11,7 @@ const API_URL = 'https://translate.yandex.net/api/v1.5/tr.json/translate';
 
 function translate(text) {
     https.get(`${API_URL}?key=${API_KEY}&text=${text}&lang=en-ru`, (res) => {
-        res.on('data', (d) => console.log(JSON.parse(d).text));
+        res.on('data', (d) => console.log(JSON.parse(d).text[0]));
     }).on('error', (err) => {
         throw err;
     });
