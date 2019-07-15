@@ -1,3 +1,6 @@
+/*Создать программу для получения информации о последних
+новостей с выбранного вами сайта в структурированном виде.*/
+
 const request = require("request");
 const cheerio = require("cheerio");
 request("https://tproger.ru/", (err, response, html)=>{
