@@ -22,4 +22,5 @@ async function translat() {
         translat();
     }
 }
+
 translat();
