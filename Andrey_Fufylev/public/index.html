@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Translator</title>
+</head>
+<body>
+<div id="app">
+    <textarea name="textarea" rows="10" cols="50" class="input-text" v-model="textToTranslate">Input text to translate EN-RU</textarea>
+    <br>
+    <button class="btn" type="button" @click="getJson()">Translate</button>
+    <p>{{ translatedText }}</p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            textToTranslate: '',
+            translatedText: ''
+        },
+        methods: {
+            getJson() {
+                fetch(`/api/translate/${ this.textToTranslate }`)
+                    .then(result => result.json())
+                    .then(data => {
+                        this.translatedText = data.text[ 0 ];
+                    })
+                    .catch(error => console.log(error))
+            },
+        },
+    });
+</script>
+</body>
+</html>
