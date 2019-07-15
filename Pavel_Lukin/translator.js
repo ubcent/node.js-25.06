@@ -8,9 +8,9 @@ const format = 'plain';
 async function translat() {
     const userText = await input.text('Bведи ка словечко англицкое!', {});
     if(userText && userText !== 'n') {
-        await request(`https://translate.yandex.net/api/v1.5/tr/translate?key=${key}&text=${userText}&lang=${lang}&format=${format}`, 
+        await request(`https://translate.yandex.net/api/v1.5/tr/translate?key=${ key }&text=${ userText }&lang=${ lang }&format=${ format }`, 
         function(error, response, html){
-            if (!error && response.statusCode == 200) {
+            if(!error && response.statusCode == 200) {
                 var $ = cheerio.load(html);
                 console.log($('Translation').find('text').text());
                 translat();
