@@ -16,10 +16,9 @@ async function translat() {
                 translat();
             }
         } );
-    }else if(userText === 'n') {
+    } else if(userText === 'n') {
         return true;
-    }
-     else {
+    } else {
         translat();
     }
 }
