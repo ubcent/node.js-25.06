@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        input.text {
+            width:  300px;
+            border:1px solid black;
+        }
+    </style>
+    <title>Переводчик с Английского на Русский</title>
+</head>
+<body>
+<div id="app">
+    <input v-model="text" @keyup.enter="translate()" placeholder="текст для перевода" class="text">
+    <button @click="translate()">Перевести на Русский</button>
+    <p>Перевод текста: {{ data }}</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="js.js"></script>
+</body>
+</html>
