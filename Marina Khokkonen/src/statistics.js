@@ -1,19 +1,16 @@
-const minimist = require('minimist');
-const fs = require('fs');
+const minimist = require("minimist");
+const fs = require("fs");
 
 const argv = minimist(process.argv.slice(2));
 const promise = new Promise((resolve, reject) =>{
-    setTimeout(() => {
-        fs.readFile(`./src/${argv.file}`, 'utf8', (err, data) =>{
-            if(err){
-                reject(err);
-            }
-            else {
-                //console.log(data);
-                resolve(JSON.parse(data));
-            }
-        });
-    },1000);
+    fs.readFile(`./src/${argv.file}`, "utf8", (err, data) =>{
+        if(err){
+            reject(err);
+        }
+        else {
+            resolve(JSON.parse(data));
+        }
+    });
 });
 
 
