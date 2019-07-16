@@ -1,8 +1,7 @@
-const minimist = require('minimist');
 const readline = require('readline');
 const fs = require('fs');
 
-const argv = minimist(process.argv.slice(2));
+const argv = process.argv.slice(2,3);
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -14,7 +13,6 @@ const gameStat = {
     loss: 0,
     winStreak: 0,
     lossStreak: 0,
-
     boolStreak: false,
     maxWinStreak: 0,
     maxLossStreak: 0
@@ -24,14 +22,14 @@ console.log('Орел(1) или решка(2)? Для выхода \'e\' без 
 rl.on('line', (line) => {
     if (line === 'e' || line === 'е') {
         rl.close();
-        if (argv._.length) {
-            fs.appendFile('./users_logs/' + argv._ , JSON.stringify(gameStat), (err) => {
+        if (argv.length) {
+            fs.writeFile('./users_logs/' + argv, JSON.stringify(gameStat), (err) => {
                 if (err) {
                     console.log(err);
                 }
             })
         }
-        console.log(gameStat);
+        console.log(`Для анализа игровой сессии запустите \"analyze ${argv}\"`);
     } else {
         const random = Math.floor(Math.random() * 2 + 1);
         console.log(`Выпало ${random === 1 ? 'орел' : 'решка'}`);
