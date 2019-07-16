@@ -1,0 +1,24 @@
+{
+  "name": "node.js-25.06",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ansi": "^0.3.1",
+    "cheerio": "latest",
+    "fs": "0.0.1-security",
+    "minimist": "^1.2.0",
+    "os": "^0.1.1",
+    "readline": "^1.3.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.35.0"
+  }
+}
