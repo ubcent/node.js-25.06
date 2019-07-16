@@ -12,7 +12,7 @@ app.use(function(req, res, next) {
 
 app.get('/',(request, response) => {
       console.log(request.url);
-    request.url = request.url.substr(7);
+    request.url = request.url.substr(7).replace(/%3F/g, "?");
     translate.translate(request.url, { to: 'ru' }, function(err, res) {
         response.send(res.text);
     });

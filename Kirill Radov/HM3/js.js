@@ -14,7 +14,7 @@ new Vue({
                     params: {
                     text: this.text,
                 }
-            }).then(response => {this.data = response.data[0]}).catch(error => (this.data = error))
+            }).then(response => {this.data = response.data[0].replace(/\+/g, " ")}).catch(error => (this.data = error))
         }
     },
 
