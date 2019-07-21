@@ -4,43 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prettier": "./node_modules/.bin/prettier --write src/**/*.js",
-    "build": "babel src --out-dir=build"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Veniamin Shitikov",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.5.0",
-    "@babel/core": "^7.5.0",
-    "@babel/plugin-proposal-class-properties": "^7.5.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.5.0",
-    "@babel/preset-env": "^7.5.0",
-    "@babel/preset-react": "^7.0.0",
     "eslint": "^6.0.1",
-    "eslint-config-strongloop": "^2.1.0",
-    "eslint-plugin-react": "^7.14.2",
-    "prettier": "1.18.2"
+    "eslint-config-strongloop": "^2.1.0"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "consolidate": "^0.15.1",
+    "cookie-parser": "^1.4.4",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
-    "ink": "^2.3.0",
-    "ink-select-input": "^3.1.1",
-    "ink-text-input": "^3.2.0",
-    "isomorphic-fetch": "^2.2.1",
-    "react": "^16.8.6",
+    "handlebars": "^4.1.2",
     "request": "^2.88.0"
-  },
-  "babel": {
-    "plugins": [
-      "@babel/plugin-proposal-class-properties",
-      "@babel/plugin-proposal-object-rest-spread",
-      "@babel/plugin-transform-modules-commonjs"
-    ],
-    "presets": [
-      "@babel/preset-react"
-    ]
   }
 }
