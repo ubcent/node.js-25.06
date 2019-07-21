@@ -1,0 +1,13 @@
+<div class="user">
+    <h1>{{firstName}} {{lastName}}</h1>
+
+    {{#if error}}
+       <h2>Произошёл конфуз!!!</h2>
+    {{/if}}
+
+    <ul>
+        {{#each posts}}
+        <li>{{this}}</li>
+        {{/each}}
+    </ul>
+</div>
