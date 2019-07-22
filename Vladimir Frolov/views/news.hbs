@@ -1,0 +1,21 @@
+<div class = "user">
+  <h2><a href="/">home</a></h2>
+  <form method="post">
+  <button id = "economy" type="submit" name="type" value="1">Экономика</button>
+
+  <button id = "foreighn" type="submit" name="type" value="2">Финансы</button>
+
+  <button id = "technology" type="submit" name="type" value="3">Технологии</button>
+</form>
+  {{#if error}}
+    <h2>Произошла ошибка</h2>
+    {{error}}
+  {{/if}}
+  {{#if text}}
+      <h2>Новость</h2>
+     <div>{{text}}</div>
+  {{else}}
+  Выберите категорию
+  {{/if}}
+
+</div>
