@@ -11,11 +11,11 @@
     <h1>Парсим новости:)</h1>
 
 <form action="/" method="POST">
-    <label for="url">Ресурс</label>
+    <label for="url">Habr</label>
     <select name="url" id="url">
-        <option selected>{{url}}</option>
-        <option >Habr</option>
-        <option >Yandex</option>
+        <option value="https://habr.com/ru/">Публикации</option>
+        <option value="https://habr.com/ru/news/">Новости</option>
+        <option value="https://habr.com/ru/sandbox/">Песочница</option>
     </select> 
     <label for="count">Количество новостей</label>
     <select name="count" id="count">
