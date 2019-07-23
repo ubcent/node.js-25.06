@@ -12,7 +12,6 @@
 формы дополнительно учитывать передаваемые GET-запросы
 (например, ?count=10&lang=ru и т.д.)*/
 const path = require('path');
-//const util = require('util');
 const request = require('request');
 const cheerio = require('cheerio');
 const consolidate = require('consolidate');
@@ -24,11 +23,11 @@ const app = express();
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 const tagTypes = [
-                    {tag: "html", selected: false},
-                    {tag: "css", selected: false},
-                    {tag: "javascript", selected: false},
-                    {tag: "react", selected: false},
-                    {tag: "node-js", selected: false},
+                    {tag: 'html', selected: false},
+                    {tag: 'css', selected: false},
+                    {tag: 'javascript', selected: false},
+                    {tag: 'react', selected: false},
+                    {tag: 'node-js', selected: false},
                  ];
 
 app.set('views', __dirname + '/public');
