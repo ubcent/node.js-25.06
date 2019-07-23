@@ -17,13 +17,14 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-    const news = []
-    let $
-    request(req.body.url, function(err, response, body) {
-    
+    const { url, count } = req.body
+    res.cookie('url', url)
+    res.cookie('count', count)
+    request(url, function(err, response, body) {
         if (!err && response.statusCode == 200) {
-            $ = cheerio.load(body)
-             let time, head, prew
+            const news = []
+            let $ = cheerio.load(body)
+            let time, head, prew
             $('article.post.post_preview').each(function(i, el) {
                 if(i < req.body.count){
                     time = $(this).find('span.post__time').text()

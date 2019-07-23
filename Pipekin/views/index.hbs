@@ -12,14 +12,13 @@
 
 <form action="/" method="POST">
     <label for="url">Habr</label>
-    <select name="url" id="url">
+    <select class="url" name="url" id="url" value={{url}}>
         <option value="https://habr.com/ru/">Публикации</option>
         <option value="https://habr.com/ru/news/">Новости</option>
         <option value="https://habr.com/ru/sandbox/">Песочница</option>
     </select> 
     <label for="count">Количество новостей</label>
-    <select name="count" id="count">
-        <option selected>{{count}}</option>
+    <select name="count" id="count" value={{count}}>
         <option >1</option>
         <option >2</option>
         <option >3</option>
@@ -38,6 +37,5 @@
         <p>{{prew}}</p>
         {{/each}}
     </section>
-
 </body>
 </html>
