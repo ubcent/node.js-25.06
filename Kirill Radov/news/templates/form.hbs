@@ -1,0 +1,24 @@
+<div class="form">
+    <form action="/news" method="POST">
+        <select name="name">
+            <option value="iz" {{selected.iz}}>IZ.RU</option>
+            <option value="rbc" {{selected.rbc}}>RBC.RU</option>
+            <option value="russrt" {{selected.russrt}}>RUSSIAN.RT.COM</option>
+            </select>
+        <select name="count">
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="100" selected>Все</option>
+        </select><input type="submit" value="Показать" />
+    </form>
+    <div class="news">
+        <h1>Последние новости с портала {{portalName}}</h1>
+        <ul>
+            {{#each news}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
