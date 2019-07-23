@@ -3,8 +3,11 @@ const cheerio = require('cheerio');
 const express = require('express');
 const path = require('path');
 const consolidate = require('consolidate');
+const cookieParser = require('cookie-parser');
 
 const app = express();
+
+app.use(cookieParser());
 
 app.engine('hbs', consolidate.handlebars);
 app.set('view engine', 'hbs');
@@ -56,7 +59,14 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 app.get('/news/', (req, res) => {
-    res.render('form', news[newsId.keys[0]]);
+    if (req.cookies.news != null && !isNaN(req.cookies.news.count) && req.cookies.news.count > 0
+    && req.cookies.news.count <= 100 && newsId.keys.indexOf(req.cookies.news.name) ) {
+        news[req.cookies.news.name].newsSliced = news[req.cookies.news.name].news.slice(0,req.cookies.news.count);
+        res.render('form', news[req.cookies.news.name]);
+    } else  {
+        news[newsId.keys[0]].newsSliced = news[newsId.keys[0]].news;
+        res.render('form', news[newsId.keys[0]]);
+    }
 });
 
 app.post('/news', (req, res) => {
@@ -67,8 +77,9 @@ app.post('/news', (req, res) => {
     } else {
         news[req.body.name].newsSliced = news[req.body.name].news.slice(0,req.body.count);
         news[req.body.name].selected[req.body.name] = 'selected';
+        res.cookie('news', { name: req.body.name, count: req.body.count }, { maxAge: 900000 });
         res.render('news', news[req.body.name]);
-    };
+    }
 });
 
 for(let j = 0; j < newsId.keys.length; j++) {
