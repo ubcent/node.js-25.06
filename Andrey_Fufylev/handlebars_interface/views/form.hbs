@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>news service</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <form action="/news" method="post">
+        <div class="row">
+            <div class="form-group col-4">
+                <label for="source">Выберите новостной портал</label>
+                <select class="form-control" id="source" name="source">
+                    <option value="rbc.ru">rbc.ru</option>
+                    <option value="bbc.com">bbc.com</option>
+                    <option value="rambler.ru">rambler.ru</option>
+                </select>
+            </div>
+            <div class="form-group col-4">
+                <label for="topic">Выбирете вид новостей</label>
+                <select class="form-control" id="topic" name="topic">
+                    <option value="general">General</option>
+                    <option value="auto">Auto</option>
+                    <option value="sport">Sport</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary getBtn">Получить новости</button>
+    </form>
+    <br>
+    <br>
+    <div class="news">
+        {{#if source}}
+            <p>Новостной блок получен из "{{source}}" по теме "{{topic}}"</p>
+        {{/if}}
+        <br>
+        <ul>
+            {{#each news}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
