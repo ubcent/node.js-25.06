@@ -1,7 +1,6 @@
 {
   "extends": [
-    "strongloop",
-    "plugin:react/recommended"
+    "strongloop"
   ],
   "parserOptions": {
     "ecmaVersion": 2017,
