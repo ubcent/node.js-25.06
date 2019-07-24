@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Express</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<h1>Lesson4. Express practice</h1>
+<h2>Сервис получения статей с хабра</h2>
+<div class="block1">
+  <p>Выберите поток статей:</p>
+  <select onChange="selectFlow(this)">
+    <option value=""></option>
+    <option value="develop">Разработка</option>
+    <option value="admin">Администрирование</option>
+    <option value="design">Дизайн</option>
+    <option value="management">Менеджмент</option>
+    <option value="marketing">Маркетинг</option>
+    <option value="geektimes">Гиктаймс</option>
+    <option value="misc">Разное</option>
+  </select>
+<button id="btnListNews" onclick="sendRequestFlow()" disabled>Получить список статей</button>
+</div>
+
+<div class="block2">
+  <p>Список новостей выбранного потока:</p>
+  <p id="blockNews" class="listThread"></p>
+</div>
+
+<div class="block4" >
+  Ваша статья: <br><br>
+  <p class="contentPost" hidden>
+
+  </p>
+</div>
+
+<script>
+  const btnListNews = document.getElementById('btnListNews');
+  var flowValue = '';
+
+  function selectFlow(element) {
+    flowValue = element.options[element.selectedIndex].value;
+    if (flowValue) {
+      btnListNews.removeAttribute("disabled");
+    } else {
+      btnListNews.disabled = true;
+    }
+  };
+
+  const blockNews = document.getElementById('blockNews');
+
+  function sendRequestFlow() {
+    let url = `http://localhost:8888/flow?flowname=${flowValue}`;
+    fetch(url)
+            .then((result) => {
+              return result.text();
+            })
+            .then((data) => {
+              blockNews.innerHTML = data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+  };
+
+  const blockPost = document.querySelector('.contentPost');
+
+  function getCheckedNews() {
+    try {
+      const lenValue = document.querySelector('input[name="gr"]:checked').value;
+      try {
+        const postValue = document.querySelector('input[name="radgroup"]:checked').nextSibling.nodeValue;
+        var payload = {
+          len: lenValue,
+          post: postValue,
+        };
+      } catch (e) {
+        alert('Выберите статью!')
+      }
+    } catch (e) {
+      alert('Выберите краткое или полное описание!')
+    }
+
+    if(payload) {
+      let url = `http://localhost:8888/getNews`;
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+              .then((res) => {
+                return res.text();
+              })
+              .then((data) => {
+                blockPost.removeAttribute("hidden");
+                blockPost.innerHTML = data;
+              })
+    }
+  }
+
+</script>
+</body>
+</html>
