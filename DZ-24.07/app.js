@@ -53,9 +53,9 @@ app.post('/myform', (req, res) => {
         res.render('index', {count: 'число новостей не должно быть больше ' + newsLength});
     } else {
         let tmpList = [];
+        res.cookie('tmpcount', _countNews);
+        res.cookie('lang', req.body.lang);
         for(let i = 0; i < _countNews; i++) {
-            res.cookie('tmpcount', _countNews);
-            res.cookie('lang', req.body.lang);
             tmpList.push(newsList[i]);
         }
         res.render('news', {newsList: tmpList});
