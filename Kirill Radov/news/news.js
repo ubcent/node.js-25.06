@@ -4,10 +4,11 @@ const express = require('express');
 const path = require('path');
 const consolidate = require('consolidate');
 const cookieParser = require('cookie-parser');
-
 const app = express();
 
 app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded());
 
 app.engine('hbs', consolidate.handlebars);
 app.set('view engine', 'hbs');
@@ -55,8 +56,6 @@ for (key in news) {
     newsId.keys.push(key);
 };
 
-app.use(express.json());
-app.use(express.urlencoded());
 
 app.get('/news/', (req, res) => {
     if (req.cookies.news != null && !isNaN(req.cookies.news.count) && req.cookies.news.count > 0
@@ -65,7 +64,7 @@ app.get('/news/', (req, res) => {
         res.render('form', news[req.cookies.news.name]);
     } else  {
         news[newsId.keys[0]].newsSliced = news[newsId.keys[0]].news;
-        res.render('form', news[newsId.keys[0]]);
+        res.render('news', news[newsId.keys[0]]);
     }
 });
 
