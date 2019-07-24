@@ -1,0 +1,13 @@
+<form action="#" id="form2" onsubmit="return false">
+    <ul>
+        {{#each news}}
+            <li><input type="radio" name="radgroup">{{this}}</li>
+        {{/each}}
+    </ul>
+    <p class="block3">Выберите один из вариантов: <br>
+        <input type="radio" name="gr" value="shot" style="margin-top: 10px">Краткое описание<br>
+        <input type="radio" name="gr" value="full">Полное описание
+    </p>
+    <button id="btnOneNews" type="submit" onclick="getCheckedNews()">Загрузить статью</button>
+</form>
+
