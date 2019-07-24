@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/style.css">
+    <title>Document</title>
+</head>
+<body class="centre">
+    <h1>Парсим новости:)</h1>
+
+<form action="/" method="POST">
+    <label for="url">Habr</label>
+    <select class="url" name="url" id="url" value={{url}}>
+        <option value="https://habr.com/ru/">Публикации</option>
+        <option value="https://habr.com/ru/news/">Новости</option>
+        <option value="https://habr.com/ru/sandbox/">Песочница</option>
+    </select> 
+    <label for="count">Количество новостей</label>
+    <select name="count" id="count" value={{count}}>
+        <option >1</option>
+        <option >2</option>
+        <option >3</option>
+        <option >4</option>
+        <option >5</option>
+        <option >6</option>
+    </select> <br>
+
+    <button type="submit">Читать</button>
+</form>
+
+    
+    <section class="news">
+        {{#each news}}
+        <h3>{{time}} {{head}}</h3>
+        <p>{{prew}}</p>
+        {{/each}}
+    </section>
+</body>
+</html>
