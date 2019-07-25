@@ -2,6 +2,13 @@ const express = require('express');
 const path = require('path');
 
 const consolidate = require('consolidate');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://192.168.99.100:32786/insta', { useNewUrlParser: true });
+
+const User = require('./models/user');
+
+// const Task = require('./models/task');
 // const bodyParser = require('body-parser');
 
 const app = express();
@@ -37,12 +44,16 @@ app.all('/users/:id/:name', (req, res, next) => {
   next();
 });
 
-app.get('/users', (req, res) => {
-  const user = {
-    firstName: 'Darth',
-    lastName: 'Vaider',
-  }
-  res.send(user);
+/*app.get('/tasks', async (req, res) => {
+  const tasks = await Task.getAll();
+
+  res.render('tasks', tasks);
+});*/
+
+app.get('/users', async (req, res) => {
+  const users = await User.find().limit(100);
+
+  res.send(users);
 });
 
 app.get('/users/:id/:name', (req, res) => {
