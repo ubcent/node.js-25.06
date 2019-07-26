@@ -4,7 +4,7 @@ const path = require('path');
 const logger = require('morgan');
 const consolidate = require('consolidate');
 const habrRoute = require('./routes/habr');
-const todomysql = require('./routes/todolist/mysql/root');
+const todoMysql = require('./routes/todolist/mysql/root');
 
 
 const app = express();
@@ -18,7 +18,7 @@ app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/habr', habrRoute);
-app.use('/todomysql', todomysql);
+app.use('/todomysql', todoMysql);
 
 app.use('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
