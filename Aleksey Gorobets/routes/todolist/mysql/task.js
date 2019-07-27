@@ -13,7 +13,7 @@ module.exports = {
     getAll() {
         return new Promise((resolve, reject) => {
             const sql = mysql.format('select * from listTask;');
-            pool.query('select * from listTask;', (err, rows, fields) => {
+            pool.query(sql, (err, rows, fields) => {
                 if (err) {
                     reject('Error occurred ' + err);
                 }
@@ -31,6 +31,28 @@ module.exports = {
                 resolve(rows);
             });
         });
+    },
+    insertTask(task) {
+        return new Promise((resolve, reject) => {
+            const sql = mysql.format('insert into listTask (num, title, description, status) values (?, ?, ?, ?)', task);
+            pool.query(sql, (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(rows);
+            })
+        })
+    },
+    updateTask(taskId) {
+        return new Promise((resolve, reject) => {
+            const sql = mysql.format('update listTask (num, title, description, status) values (?, ?, ?, ?)', task);
+            pool.query(sql, (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(rows);
+            })
+        })
     }
 };
 
