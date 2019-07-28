@@ -17,7 +17,6 @@ app.get('/', (req, res) => {
 });
 app.post('/', (req, res) => {
   let url = '';
-
   switch (req.body.type) {
     case 'politics':
       url = 'https://news.mail.ru/politics/';
@@ -41,8 +40,8 @@ app.post('/', (req, res) => {
         res.render('news', {list, url: url});
       }
     });
-  } catch (e) {alert('Ошибка получения контента')}
-
-
+  } catch (e) {
+    alert('Ошибка получения контента');
+  }
 });
 app.listen(8888);
