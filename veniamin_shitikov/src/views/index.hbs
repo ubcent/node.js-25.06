@@ -5,48 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <title>BASH.IM POSTS</title>
+  <title>TODO list</title>
 </head>
 <body>
   <nav class="navbar navbar-dark bg-primary">
     <div class="container">
       <a class="navbar-brand" href="#">SV</a>
-      <span class="navbar-text">
-        Добро пожаловать! Выберите <i>цитаты</i>
-      </span>
     </div>
   </nav>
   <main role="main" class="flex-shrink-0">
-
     <div class="container mt-4 mb-4">
-      <form method="POST">
-        <div class="form-row">
-          <div class="form-group col-sm-6">
-            <label for="post_category">Категория</label>
-            <select class="form-control" name="category" id="post_category">
-              <option disabled selected value> -- выберите категорию -- </option>
-              <option value="">Новые</option>
-              <option value="/best">Лучшие</option>
-              <option value="/random">Случайные</option>
-              <option value="/byrating">По рейтингу</option>
-            </select>
+      <div id="app">
+        <h2 class="text-center m-3">ToDo List</h2>
+        <div class="container">
+          <!-- Add new item -->
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Add New Item" id="add-item">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" onclick="addItem()" type="button" id="button-addon2">Add</button>
+            </div>
           </div>
-          <div class="form-group col-sm-6">
-            <label for="post_count">Колличество</label>
-            <select class="form-control" name="count" id="post_count">
-              <option disabled selected value> -- выберите колличество -- </option>
-              <option value="3">3</option>
-              <option value="5">5</option>
-              <option value="10">10</option>
-            </select>
-          </div>
+          <!-- View existing items -->
+          {{#if todos.length}} 
+            <table class="list-group">
+              {{#each todos}}
+                <tr class="list-group-item">
+                  <td class="col-sm-8 text-break {{#if this.done}}mark{{/if}}">
+                    <input data-todo={{this.id}} onclick="toggleDone(this)" type="checkbox" {{#if this.done}}checked{{/if}} >
+                    {{this.text}}
+                  </td>
+                  <td class="col-sm-4">
+                    <button data-todo={{this.id}} onclick="deleteItem(this)" class="btn btn-danger">Delete</button>
+                  </td>
+                </tr>
+              {{/each}}
+            </table>
+          {{/if}}
         </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary">Отправить</button>
-        </div>
-      </form>
-      <hr>
-      {{{posts}}}
+      </div>
     </div>
   </main>
   <footer class="footer mt-auto py-3 bg-light">
@@ -54,5 +50,49 @@
       <span class="text-muted">© 2019 BeHuaMuH</span>
     </div>
   </footer>
+  <script>
+    const updatePage = () => window.location.reload();
+    const handleError = () => window.location.href = '/error';
+
+    function addItem() {
+      const input = document.getElementById('add-item');
+      const todo = {
+        done: false,
+        text: input.value,
+      };
+
+      fetch('add-todo', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(todo),
+      }).then(updatePage)
+      .catch(handleError);
+    }
+
+    function toggleDone(checkbox) {
+      fetch('update-todo', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          id: checkbox.dataset.todo,
+          done: checkbox.checked,
+         }),
+      }).then(updatePage)
+      .catch(handleError);
+    }
+
+    function deleteItem(btn) {
+      fetch(`delete/${btn.dataset.todo}`, {
+        method: 'delete',
+      }).then(updatePage)
+      .catch(handleError);
+    }
+  </script>
 </body>
 </html>

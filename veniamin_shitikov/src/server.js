@@ -1,44 +1,72 @@
 const express = require('express');
 const consolidate = require('consolidate');
 const path = require('path');
-const cookieParser = require('cookie-parser');
-const request = require('request');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-const newsParser = require('./newsParser');
+const Todos = require('./models/todos');
 
+const mongoUrl = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
 const app = express();
+const PORT = process.env.APP_PORT || 8000;
 
-const PORT = 8000;
+mongoose.connect(mongoUrl, { useNewUrlParser: true });
+
 
 app.engine('hbs', consolidate.handlebars);
 app.set('view engine', 'hbs');
 app.set('views', path.resolve(__dirname, 'views'));
 
-app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post('/', (req, res) => {
-  const { category, count } = req.body;
-  res.cookie('category', category);
-  res.cookie('count', count);
-  res.redirect(302, '/');
+app.post('/update-todo', async(req, res) => {
+  const { id, done } = req.body;
+
+  try {
+    await Todos.findByIdAndUpdate(id, { done });
+    res.status(200).end();
+  } catch (err) {
+    res.status(400).end();
+    console.error(err);
+  };
 });
 
-app.get('/', (req, res) => {
-  const { category, count = 3 } = req.cookies;
+app.post('/add-todo', async(req, res) => {
+  const { text, done } = req.body;
 
-  const POST_URL = `https://bash.im${category}`;
-
-  request(POST_URL, (err, responce, body) => {
-    let posts = '';
-
-    if (!err && responce.statusCode === 200) {
-      posts = newsParser(body).slice(0, +count).join('<hr/>');
-    }
-
-    res.render('index', { posts });
+  const todo = new Todos({
+    text,
+    done,
   });
+
+  todo.save()
+    .then(() => {
+      res.status(200).end();
+    })
+    .catch(err => {
+      res.status(400).end();
+      console.error(err);
+    });
+});
+
+app.delete('/delete/:id', async(req, res) => {
+  try {
+    await Todos.findByIdAndDelete(req.params.id);
+    res.status(200).end();
+  } catch (err) {
+    res.status(400).end();
+    console.error(err);
+  };
+});
+
+app.get('/', async(_, res) => {
+  const todos = await Todos.find();
+  res.render('index', { todos });
+});
+
+app.get('/error', (_, res) => {
+  res.render('error');
 });
 
 app.listen(PORT, () => {

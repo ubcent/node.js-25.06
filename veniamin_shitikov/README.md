@@ -29,5 +29,20 @@
 Парсер цитат с сайта `bash.im`.
 Запуск `node src/server.js`.
 
+# Урок 5
 
+ToDo list с использованием  mongodb.
+В корневой папке есть файл .env
+Там необходимо прописать настройки подключения к базе mongodb
+```
+DB_HOST=[ip_adress]
+DB_NAME=[database_name]
+DB_PORT=[database_port]
+```
+Также в этом файле можно указать порт, на котором будет работать сервер.
+```
+APP_PORT=[server_port]
+```
+
+Запуск `node src/server.js`.
 
