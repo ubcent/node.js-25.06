@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TO-DO-List</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<div id="main">
+<!--    <a id="btn-remove-all" class="btn-common" href="#">Начать новый список</a>-->
+    <div>
+        <input id="new-todo" placeholder="Что нужно делать?" />
+        <a id="btn-enter" class="btn-common" href="#">Enter</a>
+    </div>
+    <div>
+        <ul id="list-task" class="list-task">
+
+        </ul>
+    </div>
+    <div>
+        <ol id="list-not-ready">
+        </ol>
+    </div>
+    <div>
+        <ul id="list-ready">
+        </ul>
+    </div>
+    <a id="btn-all-tasks" class="btn-common" onclick="getAllTask(this)" href="#">Вывести все задачи</a>
+    <a id="btn-remove-completed" class="btn-common" href="#">Удалить выполненные</a>
+</div>
+<script>
+    function getAllTask() {
+        var url = 'http://localhost:8888/todomysql/getalltasks';
+        fetch(url)
+            .then((result) => {
+                return result.text();
+            })
+            .then((data) => {
+                $('#list-task').append(data);
+                console.log(data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+</script>
+</body>
+</html>

@@ -17,7 +17,11 @@ module.exports = {
                 if (err) {
                     reject('Error occurred ' + err);
                 }
-                resolve(rows);
+                const obj = {list: []};
+                Object.keys(rows).forEach(function(key) {
+                    obj['list'].push({id: rows[key].id, num: rows[key].num, title: rows[key].title, description: rows[key].description, updated: rows[key].updated});
+                });
+                resolve(obj);
             });
         });
     },
@@ -32,7 +36,7 @@ module.exports = {
             });
         });
     },
-    insertTask(task) {
+    insertNewTask(task) {
         return new Promise((resolve, reject) => {
             const sql = mysql.format('insert into listTask (num, title, description, status) values (?, ?, ?, ?)', task);
             pool.query(sql, (err, rows) => {
@@ -43,9 +47,9 @@ module.exports = {
             })
         })
     },
-    updateTask(taskId) {
+    updateTask(task) {
         return new Promise((resolve, reject) => {
-            const sql = mysql.format('update listTask (num, title, description, status) values (?, ?, ?, ?)', task);
+            const sql = mysql.format('update listTask set title=?, description=?, status=? where num = ?', task);
             pool.query(sql, (err, rows) => {
                 if (err) {
                     reject(err);
@@ -53,6 +57,17 @@ module.exports = {
                 resolve(rows);
             })
         })
-    }
+    },
+    deleteTask(id) {
+        return new Promise((resolve, reject) => {
+            const sql = mysql.format('delete from listTask where num = ?;', [id]);
+            pool.query(sql, (err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(rows);
+            });
+        });
+    },
 };
 
