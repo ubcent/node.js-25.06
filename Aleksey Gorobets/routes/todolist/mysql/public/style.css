@@ -46,7 +46,8 @@ a.btn-common:hover {
 
 li.task {
     cursor: default;
-    margin-left: 80px;
+    /*margin-left: 80px;*/
+    list-style-type: none;
 }
 
 li.task span {

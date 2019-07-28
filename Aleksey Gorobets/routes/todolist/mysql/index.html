@@ -26,23 +26,59 @@
         <ul id="list-ready">
         </ul>
     </div>
-    <a id="btn-all-tasks" class="btn-common" onclick="getAllTask(this)" href="#">Вывести все задачи</a>
-    <a id="btn-remove-completed" class="btn-common" href="#">Удалить выполненные</a>
+    <a id="btn-all-tasks" class="btn-common" onclick="getAllTask(this)" href="#">Вывести все задачи</a><br>
+    <a id="btn-delete-tasks" class="btn-common" onclick="deleteById(this)" href="#">Удалить задачу</a><br>
+    <a id="btn-save-changes" class="btn-common" href="#">Сохрнать изменения</a>
+
 </div>
 <script>
     function getAllTask() {
-        var url = 'http://localhost:8888/todomysql/getalltasks';
-        fetch(url)
+        const urlGetAll = 'http://localhost:8888/todomysql/getalltasks';
+        fetch(urlGetAll)
             .then((result) => {
                 return result.text();
             })
             .then((data) => {
-                $('#list-task').append(data);
-                console.log(data);
+                $('#list-task').parent().html(data);
             })
             .catch((error) => {
                 console.log(error);
             });
+    }
+    function deleteById() {
+        const deleteTask = 'http://localhost:8888/todomysql/deletetask';
+        const id = [];
+        $('input[type=checkbox]:checked').each(function() {
+            id.push(this.value);
+        });
+        if (id.length > 1) {
+            console.log(id);
+            fetch(deleteTask, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(id)
+            })
+                .then((result) => {
+                    return result.text();
+                })
+                .then((data) => {
+                    alert('Была удалена запись: ' + data);
+                    console.log(data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else {
+            alert('Выберите пункт задания для удаления из списка')
+        }
+    }
+
+    function saveChangeStatus(elem) {
+        //const num = $(elem).attr('data-num').slice(0,1);
+        console.log($(`elem`).val());
     }
 </script>
 </body>

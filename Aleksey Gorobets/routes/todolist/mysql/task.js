@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const moment = require('moment');
 
 const pool = mysql.createPool({
     host: '10.30.1.59',
@@ -19,7 +20,7 @@ module.exports = {
                 }
                 const obj = {list: []};
                 Object.keys(rows).forEach(function(key) {
-                    obj['list'].push({id: rows[key].id, num: rows[key].num, title: rows[key].title, description: rows[key].description, updated: rows[key].updated});
+                    obj['list'].push({id: rows[key].id, num: rows[key].num, title: rows[key].title, description: rows[key].description, status: rows[key].status, updated: moment(rows[key].updated).format("HH:mm:ss YYYY-MM-DD")});
                 });
                 resolve(obj);
             });
@@ -60,7 +61,7 @@ module.exports = {
     },
     deleteTask(id) {
         return new Promise((resolve, reject) => {
-            const sql = mysql.format('delete from listTask where num = ?;', [id]);
+            const sql = mysql.format('delete from listTask where num in (?);', [id]);
             pool.query(sql, (err, rows, fields) => {
                 if (err) {
                     reject(err);

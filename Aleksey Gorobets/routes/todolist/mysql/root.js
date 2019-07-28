@@ -12,32 +12,15 @@ router.get('/', (req, res) => {
 
 router.get('/getalltasks', async (req, res) => {
     const allTasks = await Task.getAll();
-    let obj = {
-        list: []
-    };
-    //console.log(allTasks);
-    // allTasks.forEach((item, i) => {
-    //     console.log(item['RowDataPacket']);
-    //     //alert( i + ": " + item + " (массив:" + arr + ")" );
-    // });
-//     let obj = {
-//         list:
-//         [{
-//                 id: 1,
-//                 num: 1,
-//                 title: 'test',
-//                 description: 'Hello world',
-//                 status: 'in_progress'
-//             }]
-// };
-    //Object.keys(allTasks).forEach(function(key) {
-        //field = rows[key];
-        //console.log(allTasks[key])
-    //});
-    //console.log(allTasks['RowDataPacket']);
-    //res.send(allTasks[0]);
     res.render('listTasks', allTasks);
 });
+
+router.post('/deletetask', async (req, res) => {
+    //const id = req.body;
+    const deletedTasks = await Task.deleteTask(req.body);
+    res.send(deletedTasks);
+});
+
 
 //
 // router.use('/', async (req, res) => {
