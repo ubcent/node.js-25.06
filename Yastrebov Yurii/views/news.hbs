@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Сборщик новостей</title>
+</head>
+<body>
+    <h1>Выберите тип новостей и количество c mail.ru</h1>
+</body>
+</html>
+<div class = "news_form">
+    <form method="POST">
+        <select name="type">
+            <option value="politics">Политика</option>
+            <option value="society">Общество</option>
+            <option value="sport">Спорт</option>
+        </select>
+        <select name="qty">
+            <option value="1">1 новость</option>
+            <option value="2">2 новости</option>
+            <option value="3">3 новости</option>
+            <option value="4">4 новости</option>
+            <option value="5">5 новостей</option>
+        </select>
+        <input type="submit" value="Показать" />
+    </form>
+
+    <ul>
+        {{#each list}}
+            <li>{{this}}</li>
+        {{/each}}
+    </ul>
+</div>
