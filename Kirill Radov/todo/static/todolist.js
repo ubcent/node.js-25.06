@@ -12,7 +12,9 @@ new Vue({
     methods: {
         todolist() {
             const id = $cookies.get('todo').substr(2).replace(/"/gm,"");
-            axios.post(this.apiUrl,  {
+            this.newtaskname = '';
+            this.newtasktext = '';
+                axios.post(this.apiUrl,  {
                 params: {
                     userId: id,
                 }

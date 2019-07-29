@@ -11,16 +11,14 @@
         <a href="index.html">выйти</a> |  Ваш айди: {{ $cookies.get('todo').substr(2).replace(/"/gm,"") }}
         <div>
             <h2>Новая задача:</h2>
-            <form>
-                <p><b>Название задачи:</b></p>
-                <p><input type="text" name="newtaskname"  v-model="newtaskname"></></p>
-                <p><b>Описание задачи:</b></p>
-                <p><textarea rows="10" cols="45" name="tasktext" v-model="newtasktext"></textarea></p>
-                <div v-if="error">
-                    {{ alert(error) }}
-                </div>
-                <p><button  @click="newTask()">сохранить</button></p>
-            </form>
+            <p><b>Название задачи:</b></p>
+            <p><input type="text" name="newtaskname"  v-model="newtaskname" placeholder="имя задачи"></></p>
+            <p><b>Описание задачи:</b></p>
+            <p><textarea rows="10" cols="45" name="tasktext" v-model="newtasktext" placeholder="описание"></textarea></p>
+            <div v-if="error">
+                {{ alert(error) }}
+            </div>
+            <p><button  @click="newTask()">сохранить</button></p>
         </div>
         <h2 v-if="data === ''">Список ваших задач пуст</h2>
         <h2 v-else>Список ваших задач:</h2>
