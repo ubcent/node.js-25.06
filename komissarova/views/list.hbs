@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do Interface</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.7/css/mdb.min.css" rel="stylesheet">
+    <style>
+        i {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container my-3 list">
+    <h2>A ToDo List App</h2>
+    <form action="/addtask" method="POST">
+        <div class="row">
+            <textarea name="newtask" rows="5" cols="50" placeholder="add new task" class="p-2"></textarea>
+        </div>
+        <button class="btn btn-primary mb-3" formaction="/addtask" type="submit"> Add Task</button>
+    </form>
+    <h2>Added Task</h2>
+    <div class="my-3">
+        {{#each task }}
+            <div class="row">
+                <span data-id="{{task_id}}" class="col-1 text-center border">{{task_id}}</span>
+                <span data-id="{{task_id}}" class="col-4 text-left border">{{task_description}}</span>
+                <span class="col-1">
+                    <button type="submit" data-id="{{task_id}}" class="btn btn-primary del_btn py-1
+                    px-2">remove</button>
+                </span>
+            </div>
+        {{/each}}
+    </div>
+</div>
+<script>
+    window.onload = () => {
+        const del = document.querySelectorAll('.del_btn');
+        for (let i = 0; i < del.length; i++) {
+            del[i].addEventListener('click', event => toRemove(+event.target.dataset.id));
+        }
+        
+        function toRemove(id) {
+            fetch(`/remove`, {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({id})
+            })
+                    .then(() => window.location.reload())
+                    .catch(err => console.log(err))
+        }
+    }
+</script>
+</body>
