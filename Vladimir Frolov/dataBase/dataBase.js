@@ -3,10 +3,10 @@ const mysql = require('mysql');
 
 //pool parameters
 const pool = mysql.createPool({
-    host: 'mysql-srv38054.ht-systems.ru',
-    database: 'srv38054_vova',
-    user: 'srv38054_vova',
-    password: '123123',
+    host: 'localhost',
+    database: 'vova',
+    user: 'vova',
+    password: 'pass',
     charset: "utf8_general_ci"
 });
 pool.getConnection((err, connection) => {
