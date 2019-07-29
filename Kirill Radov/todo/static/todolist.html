@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>To-Do list</title>
+</head>
+<body>
+<div class="container">
+    <div id="todolist">
+        <a href="index.html">выйти</a> |  Ваш айди: {{ $cookies.get('todo').substr(2).replace(/"/gm,"") }}
+        <div>
+            <h2>Новая задача:</h2>
+            <form>
+                <p><b>Название задачи:</b></p>
+                <p><input type="text" name="newtaskname"  v-model="newtaskname"></></p>
+                <p><b>Описание задачи:</b></p>
+                <p><textarea rows="10" cols="45" name="tasktext" v-model="newtasktext"></textarea></p>
+                <div v-if="error">
+                    {{ alert(error) }}
+                </div>
+                <p><button  @click="newTask()">сохранить</button></p>
+            </form>
+        </div>
+        <h2 v-if="data === ''">Список ваших задач пуст</h2>
+        <h2 v-else>Список ваших задач:</h2>
+        <ul>
+            <li v-for="item in data" v-if="!item.taskDeleted">
+                <p><b>Имя задачи:</b> {{ item.taskName }}</p>
+                <p><b>Текст задачи:</b> {{ item.taskData }}</p>
+                <p><b>статус задачи:</b> {{ item.taskStatus }}</p>
+                <p><b>время создания:</b> {{ item.taskCreatedTime }} </p>
+                <a href=""><button @click="delTask(item._id)">удалить задачу</button></a>
+                <a href=""><button  @click="doneTask(item._id)">завершить задачу</button></a><hr>
+           </li>
+        </ul>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/vue-cookies@1.5.13/vue-cookies.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="todolist.js"></script>
+</body>
+</html>
