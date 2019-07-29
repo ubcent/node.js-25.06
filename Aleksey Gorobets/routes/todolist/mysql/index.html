@@ -8,30 +8,56 @@
 </head>
 <body>
 <div id="main">
-<!--    <a id="btn-remove-all" class="btn-common" href="#">Начать новый список</a>-->
-    <div>
-        <input id="new-todo" placeholder="Что нужно делать?" />
-        <a id="btn-enter" class="btn-common" href="#">Enter</a>
-    </div>
+
     <div>
         <ul id="list-task" class="list-task">
+        </ul>
+    </div>
 
-        </ul>
-    </div>
-    <div>
-        <ol id="list-not-ready">
-        </ol>
-    </div>
-    <div>
-        <ul id="list-ready">
-        </ul>
-    </div>
+    <a id="btn-add-tasks" class="btn-common" href="#openModal">Добавить задачу</a><br>
     <a id="btn-all-tasks" class="btn-common" onclick="getAllTask(this)" href="#">Вывести все задачи</a><br>
     <a id="btn-delete-tasks" class="btn-common" onclick="deleteById(this)" href="#">Удалить задачу</a><br>
-    <a id="btn-save-changes" class="btn-common" href="#">Сохрнать изменения</a>
+    <a id="btn-save-changes" class="btn-common" onclick="updateTasks(this)" href="#">Сохрнать изменения</a>
 
+      <div id="openModal" class="modalDialog">
+        <div>
+            <a href="#close" title="Закрыть" class="close">X</a>
+            <div class="modalDiv">
+                <input type="text" id="modalInput" placeholder="Заголовок задачи">
+                <textarea id="modalText" cols="30" rows="10" placeholder="Описание задачи"></textarea>
+                <select id="modalSelect">
+                    <option value="not_started">not_started</option>
+                    <option value="in_progress">in_progress</option>
+                    <option value="completed">completed</option>
+                </select>
+                <input type="button" onclick="addTask(this)" value="Отправить данные">
+            </div>
+        </div>
+    </div>
 </div>
 <script>
+    function addTask() {
+        const modalInput = $('#modalInput').val();
+        const modalText = $('#modalText').val();
+        const statusTask = $('#modalSelect option:selected').text();
+        const newTask = [modalInput, modalText, statusTask];
+        const urlAddAll = 'http://localhost:8888/todomysql/addtask';
+        fetch((urlAddAll), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newTask)
+        })
+            .then((result) => {
+                return result.text();
+            })
+            .then((data) => {
+                alert(data);
+            })
+    }
+
     function getAllTask() {
         const urlGetAll = 'http://localhost:8888/todomysql/getalltasks';
         fetch(urlGetAll)
@@ -39,19 +65,21 @@
                 return result.text();
             })
             .then((data) => {
-                $('#list-task').parent().html(data);
+                $('#list-task').empty();
+                $('#list-task').html(data);
             })
             .catch((error) => {
                 console.log(error);
             });
     }
+
     function deleteById() {
         const deleteTask = 'http://localhost:8888/todomysql/deletetask';
         const id = [];
         $('input[type=checkbox]:checked').each(function() {
             id.push(this.value);
         });
-        if (id.length > 1) {
+        if (id.length > 0) {
             console.log(id);
             fetch(deleteTask, {
                 method: 'POST',
@@ -66,7 +94,6 @@
                 })
                 .then((data) => {
                     alert('Была удалена запись: ' + data);
-                    console.log(data);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -76,10 +103,39 @@
         }
     }
 
+    var arrChangedTasks = [];
     function saveChangeStatus(elem) {
-        //const num = $(elem).attr('data-num').slice(0,1);
-        console.log($(`elem`).val());
+        const num = $(elem).attr('data-num').slice(0,1);
+        const status = elem.options[elem.selectedIndex].value;
+        arrChangedTasks.push([status, num]);
+        console.log(arrChangedTasks);
     }
+    function updateTasks() {
+        const urlUpdate = 'http://localhost:8888/todomysql/updatetasks';
+        if (arrChangedTasks.length > 0) {
+            fetch(urlUpdate, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(arrChangedTasks)
+            })
+                .then((result) => {
+                    return result.text();
+                })
+                .then((data) => {
+                    alert('Были обновлены записи: ' + data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            arrChangedTasks = [];
+        } else {
+            alert('Задания не были изменены')
+        }
+    }
+    
 </script>
 </body>
 </html>

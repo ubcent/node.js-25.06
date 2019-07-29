@@ -9,29 +9,25 @@ router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-
 router.get('/getalltasks', async (req, res) => {
     const allTasks = await Task.getAll();
     res.render('listTasks', allTasks);
 });
 
 router.post('/deletetask', async (req, res) => {
-    //const id = req.body;
     const deletedTasks = await Task.deleteTask(req.body);
     res.send(deletedTasks);
 });
 
+router.post('/updatetasks', async (req, res) => {
+    const updatedTasks = await Task.updateTask(req.body);
+    res.send(updatedTasks);
+});
 
-//
-// router.use('/', async (req, res) => {
-//     //const task = await Task.getAll();
-//     //const taskById = await Task.getById(2);
-//     //const insertTask = [6, 'test6', 'test66666', 'in_progress'];
-//     //const insertIdTask = await Task.insertNewTask(insertTask);
-//     //const updatedtask = ['test7', 'test77777', 'completed', 6];
-//     //const updatedTask = await Task.updateTask(updatedtask);
-//     const deletedTask = await Task.deleteTask(5);
-//     res.send(deletedTask);
-// });
+router.post('/addtask', async (req, res) => {
+    console.log(req.body);
+    const addedTask = await Task.insertNewTask(req.body);
+    res.send(addedTask);
+});
 
 module.exports = router;
