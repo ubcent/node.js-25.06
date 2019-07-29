@@ -14,7 +14,7 @@
       <button @click="login()">Войти</button><br>
     <p>или пройти<a href="register.html">регистрацию</a></p>
     <p v-if="data !== 'ok'">{{ data }}</p>
-    <div v-if="data === 'ok'">
+    <div v-else>
         <p >Вход выполнен успешно, вы можете <a href="todolist.html" v-if="data === 'ok'">перейти к задачам</a></p>
     </div>
    </div>
