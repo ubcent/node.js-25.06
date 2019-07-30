@@ -30,7 +30,12 @@ new Vue({
             const test = this.newtaskname + this.newtasktext;
             const id = $cookies.get('todo').substr(2).replace(/"/gm,"");
             if(test.trim() === '') {
-                this.error = 'задача не может быть пуста!'
+                this.error = 'yes'
+                setTimeout( () => {
+                     this.error = '';
+                     this.newtasktext = '';
+                     this.newtaskname = '';
+                }, 1);
             } else {
                 axios.post(`${this.apiUrl}/new`,  {
                     params: {
