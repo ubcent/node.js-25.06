@@ -1,0 +1,10 @@
+{{#each list}}
+    <li class="task"><input type="checkbox" value="{{this.num}}">{{this.num}} &nbsp;&nbsp; {{this.title}} &nbsp;&nbsp;
+        <select onchange="saveChangeStatus(this)" data-num="{{this.num}}" data-status="{{this.status}}">
+            <option value="{{this.status}}">{{this.status}}</option>
+            <option value="not_started">not_started</option>
+            <option value="in_progress">in_progress</option>
+            <option value="completed">completed</option>
+        </select>  &nbsp;&nbsp;
+        {{this.description}} &nbsp;&nbsp;  {{this.updated}}</li>
+{{/each}}
