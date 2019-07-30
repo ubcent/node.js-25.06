@@ -29,7 +29,7 @@
                 <p><b>статус задачи:</b> {{ item.taskStatus }}</p>
                 <p v-if="item.taskCreatedTime"><b>время создания:</b> {{ item.taskCreatedTime }} </p>
                 <a href=""><button @click="delTask(item._id)">удалить задачу</button></a>
-                <a href=""><button  @click="doneTask(item._id)">завершить задачу</button></a><hr>
+                <a href="" v-if="item.taskStatus !== 'done'"><button  @click="doneTask(item._id)">завершить задачу</button></a><hr>
            </li>
         </ul>
     </div>
