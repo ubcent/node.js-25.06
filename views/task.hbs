@@ -1,0 +1,6 @@
+<h3>Редактирование задачи</h3>
+<form method="POST" action="/tasks/update">
+  <input type="hidden" name="id" value="{{_id}}" />
+  <input type="text" name="title" value="{{title}}" /><br/>
+  <input type="submit" value="Сохранить" />
+</form>

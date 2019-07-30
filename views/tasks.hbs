@@ -1,0 +1,20 @@
+<form method="POST" action="/tasks/add">
+  <input name="title" placeholder="Title" /><br />
+  <input type="submit" />
+</form>
+
+<ul>
+  {{#each tasks}}
+    <li>
+      <form method="POST" action="/tasks/complete">
+        <input type="hidden" name="id" value="{{this._id}}" />
+        <input type="submit" value="Выполнено" />
+      </form>
+      {{#if this.completed}}+{{/if}}<a href="/tasks/{{this._id}}/edit">{{this.title}}</a>
+      <form method="POST" action="/tasks/delete">
+        <input type="hidden" name="id" value="{{this._id}}" />
+        <input type="submit" value="Удалить" />
+      </form>
+    </li>
+  {{/each}}
+</ul>
