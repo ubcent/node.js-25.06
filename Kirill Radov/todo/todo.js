@@ -32,21 +32,6 @@ const userOn = {
 
 };
 
-app.get('/users/all', async (req, res) => {
-    const users = await User.find();
-    res.send(users);
-});
-
-app.get('/users/:id', async (req, res) => {
-    const users = await User.find();
-    if (users[req.params.id]) {
-        res.send(`Имя: ${users[req.params.id].firstName}<br>
-    Фамилия: ${users[req.params.id].lastName}<br>
-    ID: ${users[req.params.id]._id}
-    `);
-    } else res.send('Пользователь не найден.');
-});
-
 app.post('/login', async (request, response) => {
     const req = request.body.params;
     if(req.login !== '') {
