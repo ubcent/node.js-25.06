@@ -87,3 +87,6 @@ new Vue({
     },
 
 });
+if (!$cookies.get('todo')) {
+    window.location.href = 'index.html';
+};
