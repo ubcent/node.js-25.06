@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Login page To-Do list</title>
+</head>
+<body>
+<div class="container">
+<div id="login">
+    <h1>Авторизация</h1>
+      <input type="text" name="username" v-model="username" placeholder="ваш логин" />
+      <input type="password" name="password" v-model="password" @keyup.enter="login()" placeholder="пароль" />
+      <button @click="login()">Войти</button><br>
+    <p>или пройти<a href="register.html">регистрацию</a></p>
+    <p v-if="data !== 'ok'">{{ data }}</p>
+    <div v-else>
+        <p >Вход выполнен успешно, вы можете <a href="todolist.html" v-if="data === 'ok'">перейти к задачам</a></p>
+    </div>
+   </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="login.js"></script>
+</body>
+</html>
