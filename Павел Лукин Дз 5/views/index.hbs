@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DZ 5</title>
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Id</th>
+                <th>###</th>
+                <th>###</th>
+            </tr>
+            {{#each userList}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{this.id}}</td>
+                    <td><a href="/update/{{this.id}}">Update</a></td>
+                    <td><a href="/delete/{{this.id}}">Delete</a></td>
+                </tr>
+            {{/each}}
+        </table>
+        <a href="/add">Add new element</a>
+    </div>
+</body>
+</html>
