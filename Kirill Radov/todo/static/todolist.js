@@ -11,7 +11,7 @@ new Vue({
     },
     methods: {
         todolist() {
-            const id = $cookies.get('todo').substr(2).replace(/"/gm,"");
+            const id = $cookies.get('todo').substr(2).replace(/"/gm,'');
             this.newtaskname = '';
             this.newtasktext = '';
                 axios.post(this.apiUrl,  {
@@ -28,9 +28,9 @@ new Vue({
         newTask() {
             const date = Date();
             const test = this.newtaskname + this.newtasktext;
-            const id = $cookies.get('todo').substr(2).replace(/"/gm,"");
+            const id = $cookies.get('todo').substr(2).replace(/"/gm,'');
             if(test.trim() === '') {
-                this.error = 'yes'
+                this.error = 'yes';
                 setTimeout( () => {
                      this.error = '';
                      this.newtasktext = '';
@@ -54,7 +54,7 @@ new Vue({
         },
 
         delTask(taskId) {
-            const id = $cookies.get('todo').substr(2).replace(/"/gm,"");
+            const id = $cookies.get('todo').substr(2).replace(/"/gm,'');
             axios.post(`${this.apiUrl}/delete`,  {
                 params: {
                     userId: id,
@@ -68,7 +68,7 @@ new Vue({
         },
 
         doneTask(taskId) {
-            const id = $cookies.get('todo').substr(2).replace(/"/gm,"");
+            const id = $cookies.get('todo').substr(2).replace(/"/gm,'');
             axios.post(`${this.apiUrl}/done`,  {
                 params: {
                     userId: id,
