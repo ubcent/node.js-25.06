@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do Interface</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.7/css/mdb.min.css" rel="stylesheet">
+    <style>
+        i {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div v-show="!doUpdate">
+            <h3 class="clearfix my-3">Add new tasks</h3>
+            <div class="row mb-2">
+                <div class="col-3">
+                    <label for="title">Title</label><br>
+                    <textarea name="textarea" rows="5" cols="25" id="title" v-model="newTaskTitle"></textarea>
+                </div>
+                <div class="col-6">
+                    <label for="description">Description</label><br>
+                    <textarea name="textarea" rows="5" cols="60" id="description"
+                              v-model="newTaskDescription"></textarea>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary mb-3" @click="add()">Add task</button>
+            <h3 v-show="error">{{ error }}</h3>
+            <h3 class="clearfix my-3">All currents tasks</h3>
+            <div class="row mb-2">
+                <span class="col-1 text-center border"> # ID </span>
+                <span class="col-2 text-center border"> Title </span>
+                <span class="col-4 text-center border"> Description </span>
+                <span class="col-2 text-center border"> Status </span>
+                <span class="col-2 text-center border text-wrap">
+                <i class="far fa-calendar-alt mr-2"></i> Created / Updated </span>
+            </div>
+            <div v-for="task of tasks" :key="task.id">
+                <div class="row mb-2">
+                    <span class="col-1 text-center border"> {{ task.id }} </span>
+                    <span class="col-2 border"> {{task.title}} </span>
+                    <span class="col-4 border"> {{ task.description }} </span>
+                    <span class="col-2 text-center border"> {{ task.status }} </span>
+                    <span class="col-2 text-center border text-wrap"> {{ task.update }} </span>
+                    <span class="col-1">
+                    <i class="far fa-trash-alt" @click="remove(task._id)"></i><span class="mr-3"></span>
+                    <i class="fas fa-pen"
+                       @click="showUpdateForm(task._id, task.title, task.description, task.status)"></i>
+            </span>
+                </div>
+            </div>
+        </div>
+        <div v-show="doUpdate">
+            <h3 class="clearfix my-3">Update Form</h3>
+            <div class="row mt-3">
+                <span class="col-1 text-center border"> # ID </span>
+                <span class="col-2 text-center border"> Title </span>
+                <span class="col-4 text-center border"> Description </span>
+                <span class="col-2 text-center border"> Status </span>
+
+            </div>
+            <div class="row mb-3">
+                <span class="col-1 text-center border"> {{ id }} </span>
+                <textarea class="col-2 border" name="textarea" v-model="updatedTaskTitle"></textarea>
+                <textarea class="col-4 border" name="textarea" v-model="updatedTaskDescription"></textarea>
+                <select class="col-2 text-center border" name="source" v-model="updatedTaskStatus">
+                    <option value="Not started">Not started</option>
+                    <option value="In progress">In progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-success mb-3" @click="toUpdate()">Update</button>
+            <button type="button" class="btn btn-blue-grey mb-3" @click="doUpdate=!doUpdate">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      id: null,
+      tasks: null,
+      newTaskTitle: null,
+      newTaskDescription: null,
+      updatedTaskTitle: null,
+      updatedTaskDescription: null,
+      updatedTaskStatus: null,
+      error: '',
+      doUpdate: false,
+    },
+    mounted() {
+      this.getAll();
+    },
+    methods: {
+      getAll() {
+        fetch(`/tasks`)
+          .then(result => result.json())
+          .then(data => {
+            this.tasks = data;
+            console.log(data)
+          })
+          .catch(error => console.log(error))
+      },
+      remove(id) {
+        fetch(`/tasks/remove`, {
+          method: 'DELETE',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ id })
+        })
+          .then(result => result.json())
+          .then(data => {
+            console.log(data.affectedRows);
+            this.getAll();
+          })
+          .catch(error => console.log(error))
+      },
+      showUpdateForm(id, title, description, status) {
+        this.doUpdate = true;
+        this.id = id;
+        this.updatedTaskTitle = title;
+        this.updatedTaskDescription = description;
+        this.updatedTaskStatus = status;
+      },
+      toUpdate() {
+        const data = {
+          id: this.id,
+          title: this.updatedTaskTitle,
+          description: this.updatedTaskDescription,
+          status: this.updatedTaskStatus,
+        };
+        fetch(`/tasks/update`, {
+          method: 'PUT',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+          .then(result => result.json())
+          .then(data => {
+            console.log(data.affectedRows);
+            this.getAll();
+            this.doUpdate = false;
+          })
+          .catch(error => console.log(error))
+      },
+      add() {
+        if ( !this.newTaskTitle || !this.newTaskDescription ) {
+          this.error = 'Not all fields are filled';
+          return
+        }
+        this.error = null;
+        const data = {
+          title: this.newTaskTitle,
+          description: this.newTaskDescription,
+        };
+        fetch(`/tasks/add`, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+          .then(result => result.json())
+          .then(data => {
+            console.log(data.insertId);
+            this.getAll();
+          })
+          .catch(error => console.log(error))
+      },
+    },
+  });
+</script>
+</body>
+</html>
