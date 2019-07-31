@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const path = require('path');
-const pool = require(path.resolve(__dirname, '..', 'config', 'db_config'));
+const pool = require(path.resolve(__dirname, '..', 'config', 'mysql_db_config'));
 
 module.exports = {
   getAll() {

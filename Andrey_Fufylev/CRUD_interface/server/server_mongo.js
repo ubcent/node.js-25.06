@@ -1,21 +1,21 @@
 const server = require('express');
 const path = require('path');
 const app = server();
-const mongoose = require('mongoose');
 const format = require('date-fns/format');
+require(path.resolve(__dirname, '..', 'config', 'mongo_db_config'));
 
-mongoose.connect('mongodb://localhost:27017/todo', {useNewUrlParser: true});
 app.use(server.json());
 app.use('/', server.static(path.resolve(__dirname, '..', 'public')));
 
 const Task = require('../models/task_mongo');
 
+
 app.get('/tasks', async (req, res) => {
   const tasks = await Task.find().lean();
-  for (const task of tasks) {
-    const newDate = format(task.update, 'YYYY-MM-DD HH:mm');
-    Object.assign(task, {update: newDate});
-  }
+  tasks.forEach((elem) => {
+    const newDate = format(elem.update, 'YYYY-MM-DD HH:mm');
+    Object.assign(elem, {update: newDate});
+  });
   res.send(tasks);
 });
 
