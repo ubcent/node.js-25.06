@@ -17,13 +17,15 @@ app.use('/static', express.static(
 const User = require('./controllers/user-controller');
 
 app.get('/', User.index);
-app.get('/update/:id', (req, res) => {
-    res.render('edit', {id: req.params.id});
+app.get('/update/:id/:name', (req, res) => {
+    res.render('edit', {id: req.params.id, name: req.params.name});
 });
 app.post('/update', User.update);
+
 app.get('/delete/:id', User.delete);
+
 app.get('/add',  (req, res) => {
-    res.render('add');
+    res.render('add', {id: req.params.id, name: req.params.name});
 });
 app.post('/add', User.add);
 

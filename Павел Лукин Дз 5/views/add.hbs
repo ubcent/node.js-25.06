@@ -8,9 +8,9 @@
 </head>
 <body>
     <div>
-        UPDATE
+        ADD
         <form action="/add" method="POST">
-            ID <input type="text" name="id" readonly value="{{id}}">
+            <input type="text" name="id" hidden value="{{id}}">
             Name <input type="text" name="name" value="{{name}}">
             <input type="submit" value="ok">
         </form>
