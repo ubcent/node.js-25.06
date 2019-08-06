@@ -37,33 +37,33 @@
     </div>
 </div>
 
-<h5><a href="http://localhost:8888/todomongo/logout">Выход</a></h5>
-
 <script>
     function addTask() {
-        const modalInput = $('#modalInput').val();
-        const modalText = $('#modalText').val();
-        const statusTask = $('#modalSelect option:selected').text();
-        const newTask = [modalInput, modalText, statusTask];
-        const urlAddAll = 'http://localhost:8888/todomysql/addtask';
+        const payload = {
+            title: $('#modalInput').val(),
+            description: $('#modalText').val(),
+            status: $('#modalSelect option:selected').text(),
+        };
+        const urlAddAll = 'http://localhost:8888/todomongo/addtask';
         fetch((urlAddAll), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(newTask)
+            body: JSON.stringify(payload)
         })
             .then((result) => {
                 return result.text();
             })
             .then((data) => {
-                alert(data);
+                $('#list-task').empty();
+                $('#list-task').html(data);
             })
     }
 
     function getAllTask() {
-        const urlGetAll = 'http://localhost:8888/todomysql/getalltasks';
+        const urlGetAll = 'http://localhost:8888/todomongo/getalltasks';
         fetch(urlGetAll)
             .then((result) => {
                 return result.text();
@@ -78,7 +78,7 @@
     }
 
     function deleteById() {
-        const deleteTask = 'http://localhost:8888/todomysql/deletetask';
+        const deleteTask = 'http://localhost:8888/todomongo/deletetask';
         const id = [];
         $('input[type=checkbox]:checked').each(function() {
             id.push(this.value);
@@ -97,7 +97,8 @@
                     return result.text();
                 })
                 .then((data) => {
-                    alert('Была удалена запись: ' + data);
+                    $('#list-task').empty();
+                    $('#list-task').html(data);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -129,8 +130,7 @@
                     return result.text();
                 })
                 .then((data) => {
-                    $('#list-task').empty();
-                    $('#list-task').html(data);
+                    alert('Были обновлены записи: ' + data);
                 })
                 .catch((error) => {
                     console.log(error);
