@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do Interface</title>
+    <link rel="shortcut icon" href="http://s1.iconbird.com/ico/2013/6/280/w512h5121371488807tasks512.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.7/css/mdb.min.css" rel="stylesheet">
+    <style>i {
+        cursor: pointer;
+    }</style>
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div v-show="!ifAuthorized" class="row">
+            <auth ref="auth" v-show="isSignedUp"></auth>
+            <register ref="register" v-show="!isSignedUp"></register>
+        </div>
+        <div v-show="showTasks">
+            <logout></logout>
+            <new_task ref="new_task"></new_task>
+            <all-tasks ref="AllTasks"></all-tasks>
+        </div>
+        <div v-show="showUpdateForm">
+            <task-update ref="TaskUpdate"></task-update>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--<script src="js/vue/vue.js"></script>-->
+<script src="js/authFormComponent.js"></script>
+<script src="js/registerFormComponent.js"></script>
+<script src="js/logoutFormComponent.js"></script>
+<script src="js/addTaskComponent.js"></script>
+<script src="js/allTasksComponent.js"></script>
+<script src="js/updateTaskComponent.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
