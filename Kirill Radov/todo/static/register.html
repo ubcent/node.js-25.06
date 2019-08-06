@@ -9,15 +9,17 @@
 <div class="container">
  <div id="register">
     <h1>Регистрация</h1>
-    <input type="text" name="username" v-model="username" placeholder="ваш логин" /><br>
-    <input type="password" name="password" v-model="password" placeholder="пароль" /><br>
+    <input type="text" name="username" v-model="username" placeholder="ваш логин" />*<br>
+    <input type="password" name="password" v-model="password" placeholder="пароль" />*<br>
     <input type="text" name="email" v-model="email" placeholder="ваш E-Mail" /><br>
     <input type="text" name="firstname" v-model="firstname" placeholder="ваше имя" /><br>
     <input type="text" name="lastname" v-model="lastname" placeholder="ваша фамилия" /><br>
     <button @click="register()">Зарегистрироваться</button><br>
      <p>{{ data }}</p>
-     <p v-if="data == 'Успешная регистрация!'"></p>
-     <p><a href="index.html">Войти</a></p>
+         <p><a href="index.html">Войти</a></p>
+     <div v-if="error === 'yes'">
+         {{ alert('заполните необходимые поля') }}
+     </div>
 
  </div>
 </div>

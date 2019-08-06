@@ -9,14 +9,12 @@
 <div class="container">
 <div id="login">
     <h1>Авторизация</h1>
-      <input type="text" name="username" v-model="username" placeholder="ваш логин" />
-      <input type="password" name="password" v-model="password" @keyup.enter="login()" placeholder="пароль" />
+      <input type="text" name="username" v-model="username" @focus="data = ''" placeholder="ваш логин" />
+      <input type="password" name="password" v-model="password" @click="data = ''" @keyup.enter="login()" placeholder="пароль" />
       <button @click="login()">Войти</button><br>
     <p>или пройти<a href="register.html">регистрацию</a></p>
-    <p v-if="data !== 'ok'">{{ data }}</p>
-    <div v-else>
-        <p >Вход выполнен успешно, вы можете <a href="todolist.html" v-if="data === 'ok'">перейти к задачам</a></p>
-    </div>
+     <p>{{ data }}</p>
+
    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
