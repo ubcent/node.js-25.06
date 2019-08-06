@@ -10,7 +10,7 @@
     <div>
         UPDATE
         <form action="/update" method="POST">
-            ID <input type="text" name="id" readonly value="{{id}}">
+            <input hidden type="text" name="id" value="{{id}}">
             Name <input type="text" name="name" value="{{name}}">
             <input type="submit" value="ok">
         </form>

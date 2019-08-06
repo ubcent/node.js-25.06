@@ -19,7 +19,7 @@ class  UserController extends BaseController{
            userModel.add(req.body, async (result) => {
                 super.checkResult(result);
                 await userModel.list((rows) => {
-                    res.render('index', {userList: rows});
+                    res.redirect('/');
                 });
 
            });
@@ -33,7 +33,7 @@ class  UserController extends BaseController{
             userModel.update(id, newName, async (result) => {
                 super.checkResult(result);
                 await userModel.list((rows) => {
-                    res.render('index', {userList: rows});
+                    res.redirect('/');
                 });
             });
         }
@@ -45,7 +45,7 @@ class  UserController extends BaseController{
             userModel.delete(id, async (result) => {
                 super.checkResult(result);
                 await userModel.list((rows) => {
-                    res.render('index', {userList: rows});
+                    res.redirect('/');
                 });
             });
         }
