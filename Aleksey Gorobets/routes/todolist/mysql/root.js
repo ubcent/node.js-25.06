@@ -19,9 +19,23 @@ router.post('/deletetask', async (req, res) => {
     res.send(deletedTasks);
 });
 
-router.post('/updatetasks', async (req, res) => {
-    const updatedTasks = await Task.updateTask(req.body);
-    res.send(updatedTasks);
+router.post('/updatetasks', (req, res) => {
+    const promise = new Promise((resolve, reject) => {
+        const updatedTasks = Task.updateTask(req.body);
+        resolve(updatedTasks);
+        reject(new Error('Oops, Error!'));
+    });
+    promise
+        .then((result) => {
+            let allTask = Task.getAll();
+            return allTask;
+        })
+        .then((data) => {
+            res.render('listTasks', data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 });
 
 router.post('/addtask', async (req, res) => {
