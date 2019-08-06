@@ -19,8 +19,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
+const Task = require('./modules/task');
+
 const app = express();
-const urlencodedParser = bodyParser.urlencoded({extended: false});
+
+const urlencodedParser = bodyParser.urlencoded( {extended: false} );
 
 const tagTypes = [
                     {tag: 'html', selected: false},

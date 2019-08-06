@@ -1,0 +1,25 @@
+<form method="POST" action="/tasks/add">
+    <label>Название задачи: </label> <br/>
+    <input type="text" name="title" placeholder="Title" /><br/>
+    <label>Описание задачи: </label><br/>
+    <input type="text" name="description" placeholder="Description" /><br/>
+    <input type="submit" value="Добавить задачу"/>
+</form>
+
+<ol class="tasks_list">
+    {{#each tasks}}
+        <li class="tasks_list__item">
+            <a href="/tasks/{{this._id}}/edit">{{this.title}}</a> - {{ this.status }}
+
+            <form method="POST" action="/tasks/complete">
+                <input type="hidden" name="id" value="{{this._id}}" />
+                <input class="tasks_list__btn" type="submit" value="Выполнено" />
+            </form>
+
+            <form method="POST" action="/tasks/delete">
+                <input type="hidden" name="id" value="{{this._id}}" />
+                <input class="tasks_list__btn" type="submit" value="Удалить" />
+            </form>
+        </li>
+    {{/each}}
+</ol>
