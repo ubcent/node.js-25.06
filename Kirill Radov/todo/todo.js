@@ -55,7 +55,6 @@ app.get('/login', async (req, res) => {
 });
 
 app.get('/todo', async (req, res) => {
-    console.log(req);
     if(req.user) {
         return res.send({url:'/todolist.html'});
     } else if (!req.user) {
@@ -109,6 +108,7 @@ app.post('/todo/delete', async (request, response) => {
         response.send('ok');
     } else response.send('Некорректные параметры запроса.');
 });
+
 
 app.get('/logout', (req, res) => {
     req.logout();
