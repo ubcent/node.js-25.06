@@ -6,8 +6,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
-const Task = require('./models/task');
-const User = require('./models/user');
+const { Task, User } = require('./models');
 const passport = require('./passport');
 
 mongoose.connect('mongodb://192.168.99.100:32786/todo', { useNewUrlParser: true, useFindAndModify: true });
