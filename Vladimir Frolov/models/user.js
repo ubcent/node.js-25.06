@@ -5,12 +5,11 @@ const CRYPT_STEPS = 12;
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema ({
-    firstName: { type: String},
-    lastName: { type: String},
-    login: {type: String},
-    password: {type: String},
-    email: {type: String},
+const userSchema = new Schema({
+    email: { type: String },
+    password: { type: String },
+    firstName: { type: String },
+    lastName: { type: String },
 });
 
 userSchema.pre('save', async function (next) {
@@ -23,6 +22,6 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.comparePassword = async function(candidate) {
     return await bcrypt.compare(candidate, this.password);
-};
+}
 
 module.exports = mongoose.model('User', userSchema, 'users');

@@ -7,13 +7,13 @@ new Vue({
             newtasktext: '',
             newtaskname: '',
             error: '',
+            id: '',
         }
     },
     methods: {
         todolist() {
-            const id = $cookies.get('todo').substr(2).replace(/"/gm,'');
-            this.newtaskname = '';
-            this.newtasktext = '';
+           const id = $cookies.get('todo').substr(2).replace(/"/gm,'');
+           this.id = id;
                 axios.post(this.apiUrl,  {
                 params: {
                     userId: id,
@@ -48,6 +48,8 @@ new Vue({
                     }
                 }).then(response => {
                     if(response.data === 'ok') {
+                        this.newtasktext = '';
+                        this.newtaskname = '';
                         this.todolist();
                     }}).catch(error => (this.data = error))
             }
@@ -87,6 +89,4 @@ new Vue({
     },
 
 });
-if (!$cookies.get('todo')) {
-    window.location.href = 'index.html';
-};
+

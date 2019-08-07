@@ -8,25 +8,26 @@
 <body>
 <div class="container">
     <div id="todolist">
-        <a href="index.html">выйти</a> |  Ваш айди: {{ $cookies.get('todo').substr(2).replace(/"/gm,"") }}
-        <div>
+        <a href="/logout">выйти</a>|<a href="index.html">войти</a>
+
             <h2>Новая задача:</h2>
             <p><b>Название задачи:</b></p>
             <p><input type="text" name="newtaskname"  v-model="newtaskname" placeholder="имя задачи"></></p>
             <p><b>Описание задачи:</b></p>
             <p><textarea rows="10" cols="45" name="tasktext" v-model="newtasktext" placeholder="описание"></textarea></p>
-            <div v-if="error">
-                {{ alert(error) }}
+            <div v-if="error === 'yes'">
+                {{ alert('задача не может быть пуста') }}
             </div>
             <p><button  @click="newTask()">сохранить</button></p>
-        </div>
-        <h2 v-if="data === ''">Список ваших задач пуст</h2>
+
+
+        <h2 v-if="data === ''">Список ваших задач пуст. Или вы не авторизованы</h2>
         <h2 v-else>Список ваших задач:</h2>
         <ul>
             <li v-for="item in data" v-if="!item.taskDeleted">
-                <p><b>Имя задачи:</b> {{ item.taskName }}</p>
-                <p><b>Текст задачи:</b> {{ item.taskData }}</p>
-                <p><b>статус задачи:</b> {{ item.taskStatus }}</p>
+                <p><b>Название:</b> {{ item.taskName }}</p>
+                <p><b>Описание задачи:</b> {{ item.taskData }}</p>
+                <p><b>статус:</b> {{ item.taskStatus }}</p>
                 <p v-if="item.taskCreatedTime"><b>время создания:</b> {{ item.taskCreatedTime }} </p>
                 <a href=""><button @click="delTask(item._id)">удалить задачу</button></a>
                 <a href="" v-if="item.taskStatus !== 'done'"><button  @click="doneTask(item._id)">завершить задачу</button></a><hr>
