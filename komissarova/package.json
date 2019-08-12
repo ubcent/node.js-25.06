@@ -10,11 +10,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "cheerio": "^1.0.0-rc.3",
     "consolidate": "^0.15.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-mysql-session": "^2.1.0",
+    "express-session": "^1.16.2",
     "handlebars": "^4.1.2",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.17.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "request": "^2.88.0"
   }
 }
