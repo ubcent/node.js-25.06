@@ -1,9 +1,8 @@
 const express = require('express');
-const consolidate = require('consolidate');
-const path = require('path');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
 require('dotenv').config();
-const passport = require('./passport');
 
 const User = require('./models/user');
 const Todos = require('./models/todos');
@@ -11,33 +10,57 @@ const Todos = require('./models/todos');
 const mongoUrl = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
 const app = express();
 const PORT = process.env.APP_PORT || 8000;
+const JWT_SECRET = 'some secret word';
+
+const checkAuthenticated = (req, res, next) => {
+  if (!req.headers.authorization) {
+    res.status(401).json({ message: 'Not token present' });
+    return;
+  }
+
+  const [_, token] = req.headers.authorization.split(' ');
+
+  jwt.verify(token, JWT_SECRET, (err, payload) => {
+    if (err) {
+      return res.status(401).json({ message: 'Wrong token' });
+    }
+
+    req.user = payload;
+    next();
+  });
+};
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useFindAndModify: true });
 
-app.engine('hbs', consolidate.handlebars);
-app.set('view engine', 'hbs');
-app.set('views', path.resolve(__dirname, 'views'));
-
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(passport.initialize);
-app.use(passport.session);
+app.use('/tasks', checkAuthenticated);
+app.use(cors());
 
-app.use('/tasks', passport.checkAuthenticated);
+app.get('/tasks', async (_, res) => {
+  const todos = await Todos.find();
+  res.json({ todos });
+});
 
-app.post('/update-todo', async (req, res) => {
-  const { id, done } = req.body;
+app.get('/tasks/:id', async (req, res) => {
+  const { id } = req.params;
+  const todo = await Todos.findById(id);
+  res.json({ todo });
+});
+
+app.patch('/tasks/:id', async (req, res) => {
+  const { done } = req.body;
+  const { id } = req.params;
 
   try {
     await Todos.findByIdAndUpdate(id, { done });
-    res.status(200).end();
+    res.status(200).json({ status: 'OK' });
   } catch (err) {
-    res.status(400).end();
+    res.status(400).json({ message: 'Some error' });
     console.error(err);
   };
 });
 
-app.post('/add-todo', async (req, res) => {
+app.post('/tasks', async (req, res) => {
   const { text, done } = req.body;
 
   const todo = new Todos({
@@ -47,10 +70,10 @@ app.post('/add-todo', async (req, res) => {
 
   todo.save()
     .then(() => {
-      res.status(200).end();
+      res.status(200).json({ todo });
     })
     .catch(err => {
-      res.status(400).end();
+      res.status(400).json({ message: 'Some error' });
       console.error(err);
     });
 });
@@ -58,49 +81,55 @@ app.post('/add-todo', async (req, res) => {
 app.delete('/delete/:id', async (req, res) => {
   try {
     await Todos.findByIdAndDelete(req.params.id);
-    res.status(200).end();
+    res.status(200).json({ status: 'OK' });
   } catch (err) {
-    res.status(400).end();
+    res.status(400).json({ message: 'Some error' });
     console.error(err);
   };
 });
 
-app.get('/tasks', async (_, res) => {
-  const todos = await Todos.find();
-  res.render('index', { todos });
-});
+app.post('/register', async (req, res) => {
+  const isUserExist = !!await User.findOne({ email: req.body.email });
 
-app.get('/error', (_, res) => {
-  res.render('error');
-});
-
-app.get('/register', async (req, res) => {
-  if (req.user) {
-    return res.redirect('/tasks');
+  if (isUserExist) {
+    return res.json({ message: 'Email already exists' });
   }
 
-  res.render('register');
-});
-
-app.post('/register', async (req, res) => {
   const user = new User(req.body);
   await user.save();
 
-  res.redirect('/tasks');
+  const identity = {
+    id: user._id,
+    email: user.email,
+  };
+
+  const token = jwt.sign(identity, JWT_SECRET);
+
+  res.json({ result: 'success', token });
 });
 
-app.get('/auth', (req, res) => {
-  if (req.user) {
-    return res.redirect('/tasks');
+app.post('/auth', async (req, res) => {
+  const { username, password } = req.body;
+  const user = await User.findOne({email: username});
+
+  if (!user) {
+    return res.json({ result: 'failure', message: 'Unexpected credentials' });
   }
-  res.render('auth', { error: !!req.query.error });
-});
-app.post('/auth', passport.authHandler);
 
-app.get('/logout', (req, res) => {
-  req.logout();
+  const isPasswordValid = await user.comparePassword(password);
 
-  res.redirect('/auth');
+  if (!isPasswordValid) {
+    return res.json({ result: 'failure', message: 'Unexpected credentials' });
+  }
+
+  const identity = {
+    id: user._id,
+    email: user.email,
+  };
+
+  const token = jwt.sign(identity, JWT_SECRET);
+
+  res.json({ result: 'success', token });
 });
 
 app.listen(PORT, () => {
