@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Task</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.7/css/mdb.min.css" rel="stylesheet">
+    <style>
+        i {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container my-3 list">
+    <h3>Update your task</h3>
+    <form method="POST" action="/update">
+        <div class="row">
+            <input type="hidden" name="id" value="{{task_id}}" />
+            <textarea class="p-2" rows="5" cols="50" name="description">{{task_description}}</textarea>           
+        </div>
+        <button class="btn btn-primary mb-3" type="submit">save</button>
+  </form>
+</div>
+</body>
