@@ -10,7 +10,9 @@
  <div id="register">
     <h1>Регистрация</h1>
     <input type="text" name="username" v-model="username" placeholder="ваш логин" />*<br>
-    <input type="password" name="password" v-model="password" placeholder="пароль" />*<br>
+    <input @focus="data = ''" type="password" name="password" v-model="password" placeholder="пароль" />*<br>
+    <input @focus="data = ''" type="password" name="password2" v-model="password2" placeholder="пароль еще раз" />*<br>
+     <p v-if="password !== password2 && password2.length > 0">пароли не совпадают!</p>
     <input type="text" name="email" v-model="email" placeholder="ваш E-Mail" /><br>
     <input type="text" name="firstname" v-model="firstname" placeholder="ваше имя" /><br>
     <input type="text" name="lastname" v-model="lastname" placeholder="ваша фамилия" /><br>

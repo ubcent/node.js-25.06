@@ -8,23 +8,19 @@
 <body>
 <div class="container">
     <div id="todolist">
-        <a href="/logout">выйти</a>|<a href="index.html">войти</a>
-
+        <a @click="removedata()" href="/logout">выйти</a>|<a href="index.html">войти</a>
             <h2>Новая задача:</h2>
-            <p><b>Название задачи:</b></p>
             <p><input type="text" name="newtaskname"  v-model="newtaskname" placeholder="имя задачи"></></p>
-            <p><b>Описание задачи:</b></p>
-            <p><textarea rows="10" cols="45" name="tasktext" v-model="newtasktext" placeholder="описание"></textarea></p>
+            <p><textarea rows="10" cols="45" name="tasktext" v-model="newtasktext" placeholder="подробное описание"></textarea></p>
             <div v-if="error === 'yes'">
                 {{ alert('задача не может быть пуста') }}
             </div>
             <p><button  @click="newTask()">сохранить</button></p>
 
-
         <h2 v-if="data === ''">Список ваших задач пуст. Или вы не авторизованы</h2>
         <h2 v-else>Список ваших задач:</h2>
         <ul>
-            <li v-for="item in data" v-if="!item.taskDeleted">
+            <li v-for="item in data">
                 <p><b>Название:</b> {{ item.taskName }}</p>
                 <p><b>Описание задачи:</b> {{ item.taskData }}</p>
                 <p><b>статус:</b> {{ item.taskStatus }}</p>
@@ -33,7 +29,7 @@
                 <a href="" v-if="item.taskStatus !== 'done'"><button  @click="doneTask(item._id)">завершить задачу</button></a><hr>
            </li>
         </ul>
-    </div>
+           </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="https://unpkg.com/vue-cookies@1.5.13/vue-cookies.js"></script>

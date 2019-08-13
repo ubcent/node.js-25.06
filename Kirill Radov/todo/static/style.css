@@ -10,7 +10,7 @@ ul {
 }
 
 li {
-    background-color: beige;
+    background-color: floralwhite;
     list-style-type: none;
 }
 li:nth-child(2n) {
