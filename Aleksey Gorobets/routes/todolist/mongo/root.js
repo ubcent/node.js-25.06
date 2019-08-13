@@ -42,16 +42,19 @@ router.post('/addtask', (req, res) => {
             });
 });
 
+
+
 router.post('/deletetask', async (req, res) => {
     await Task.deleteMany({"num" : { $in: req.body}});
     res.redirect('http://localhost:8888/todomongo/getalltasks');
 });
 
 router.get('/register', (req, res) => {
- if(req.user) {
+    if(req.user) {
+     console.log(req.user);
      return res.redirect('http://localhost:8888/todomongo/getalltasks');
- }
- res.render('register');
+    }
+    res.render('register');
 });
 
 router.post('/register', async (req, res) => {
@@ -61,17 +64,17 @@ router.post('/register', async (req, res) => {
 });
 
 router.get('/auth', (req, res) => {
- if(req.user) {
+    if(req.user) {
      return res.redirect('http://localhost:8888/todomongo/getalltasks');
- }
- res.render('auth', { error: !! req.query.error });
+    }
+    res.render('auth', { error: !! req.query.error });
 });
 
 router.post('/auth', passport.authHandler);
 
 router.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/auth');
+    res.redirect('http://localhost:8888/todomongo/auth');
 });
 
 module.exports = router;

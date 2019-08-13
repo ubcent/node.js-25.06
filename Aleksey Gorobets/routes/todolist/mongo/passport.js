@@ -40,6 +40,6 @@ module.exports = {
         if(req.user) {
             return next();
         }
-        res.redirect('/auth');
+        res.redirect('/todomongo/auth');
     }
 };
