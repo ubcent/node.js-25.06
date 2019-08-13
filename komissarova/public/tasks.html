@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do Interface</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.7/css/mdb.min.css" rel="stylesheet">
+</head>
+<body>
+
+<script>
+  if (!localStorage.getItem('userKey')) {
+    window.location.href = '/';
+  }
+</script>
+
+<div class="container my-3">
+    <button id="btn_logout" class="btn btn-default my-5">Sign Out</button>
+    <h2 class="text mb-3">A ToDo List App</h2>
+    <div class="row">
+        <textarea id="newtask" name="newtask" rows="5" cols="50" placeholder="add new task" class="p-2"></textarea><br>
+    </div>
+    <button id="addTask" class="btn btn-primary my-3">Add Task</button>
+    <h2 class="text mt-5">Added Task</h2>
+    <div class="my-3" id="tasks"></div>
+</div>
+<script>
+  window.onload = () => {
+    const logout_btn = document.querySelector('#btn_logout');
+    logout_btn.addEventListener('click', () => logout()); 
+    function logout() {
+      localStorage.removeItem('userKey'); 
+      window.location.href = '/'; 
+    }
+
+    function getAll() {
+      const block = document.querySelector('#tasks');
+      fetch(`/tasks`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('userKey'), 
+        },
+      })
+        .then(result => result.json()) 
+        .then(tasks => {
+          if (tasks) {
+            for (let task of tasks) {
+              const item = `
+                    <div class="row">
+                        <span data-id="${task.task_id}" class="col-1 text-center border">${task.task_id}</span>
+                        <input id="task-${task.task_id}" class="col-6 text-left border" value="${task.task_description}"/>
+                        <span class="col-1">
+                            <button id="del_btn" data-id="${task.task_id}" class="btn btn-primary py-1 px-2">remove</button>
+                        </span>
+                        <span class="col-1">
+                            <button id="update_btn" data-id="${task.task_id}" class="btn btn-primary py-1 px-2">update</button>
+                        </span>
+                    </div>
+              `;
+              block.insertAdjacentHTML('beforeend', item);
+            }
+            const del = document.querySelectorAll('#del_btn');
+            const update = document.querySelectorAll('#update_btn');
+            for (let i = 0; i < del.length; i++) {
+              del[i].addEventListener('click', event => toRemove(+event.target.dataset.id));
+              update[i].addEventListener('click', event => toUpdate(+event.target.dataset.id));
+            }
+          }
+        })
+        .catch(err => console.error(err)) 
+    }
+
+    getAll(); 
+
+    const addBtn = document.querySelector('#addTask');
+    addBtn.addEventListener('click', () => add()); 
+    function add() {
+      const newtask = document.querySelector('#newtask').value;
+      fetch(`/tasks/addtask`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': localStorage.getItem('userKey'), 
+        },
+        body: JSON.stringify({newtask})
+      })
+        .then(result => result.json()) 
+        .then(data => {
+          if (data.result === 'success') { 
+            window.location.reload();
+          }
+        })
+        .catch(err => console.error(err)) 
+    }
+
+    function toRemove(id) { 
+      fetch(`/tasks/remove`, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': localStorage.getItem('userKey'), 
+        },
+        body: JSON.stringify({id})
+      })
+        .then(result => result.json()) 
+        .then(data => {
+          if (data.result === 'success') {
+            window.location.reload();
+          }
+        })
+        .catch(err => console.log(err))
+    }
+
+    function toUpdate(id) {
+      const selector = `#task-${id}`;
+      const description = document.querySelector(selector).value;
+      console.log(id, description);
+      fetch(`/tasks/update`, {
+        method: 'PUT',
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': localStorage.getItem('userKey'), 
+        },
+        body: JSON.stringify({id, description})
+      })
+        .then(result => result.json()) 
+        .then(data => {
+          if (data.result === 'success') {
+            window.location.reload();
+          }
+        })
+        .catch(err => console.log(err))
+    }
+  }
+</script>
+</body>
