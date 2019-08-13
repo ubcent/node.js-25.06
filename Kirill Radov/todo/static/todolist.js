@@ -2,7 +2,7 @@ new Vue({
     el: '#todolist',
     data() {
         return {
-            apiUrl: 'http://localhost:8008/todo',
+            apiUrl: 'http://localhost:8008/todo/',
             data: '',
             newtasktext: '',
             newtaskname: '',
@@ -12,23 +12,22 @@ new Vue({
     },
     methods: {
         todolist() {
-           const id = $cookies.get('todo').substr(2).replace(/"/gm,'');
-           this.id = id;
-                axios.post(this.apiUrl,  {
-                params: {
-                    userId: id,
-                }
-            }).then(response => {
+             const token = localStorage.getItem('token');
+                axios.get(`${this.apiUrl}`, { headers: { Authorization: `Bearer ${token}` } })
+                    .then(response => {
                 if(response.data[0]) {
                     this.data = response.data.reverse();
-                } else this.data = '';
-            }).catch(error => (this.data = error))
+                } else this.data = response.data;
+            }).catch(error => {
+                this.data = error;
+                window.location.href = '/index.html';
+            })
         },
 
         newTask() {
+            const token = localStorage.getItem('token');
             const date = Date();
             const test = this.newtaskname + this.newtasktext;
-            const id = $cookies.get('todo').substr(2).replace(/"/gm,'');
             if(test.trim() === '') {
                 this.error = 'yes';
                 setTimeout( () => {
@@ -37,17 +36,16 @@ new Vue({
                      this.newtaskname = '';
                 }, 1);
             } else {
-                axios.post(`${this.apiUrl}/new`,  {
+                axios.post(`${this.apiUrl}`,  {
                     params: {
                         taskName: this.newtaskname,
                         taskData: this.newtasktext,
                         taskStatus: 'in progress',
                         taskDeleted: 'false',
                         taskCreatedTime: date,
-                        userId: id,
                     }
-                }).then(response => {
-                    if(response.data === 'ok') {
+                },{ headers: { Authorization: `Bearer ${token}` } }).then(response => {
+                    if(response.data.status === 'ok') {
                         this.newtasktext = '';
                         this.newtaskname = '';
                         this.todolist();
@@ -56,32 +54,26 @@ new Vue({
         },
 
         delTask(taskId) {
-            const id = $cookies.get('todo').substr(2).replace(/"/gm,'');
-            axios.post(`${this.apiUrl}/delete`,  {
-                params: {
-                    userId: id,
-                    taskId: taskId,
-                    taskDeleted: true,
-                }
-            }).then(response => {
-                if(response.data.ok) {
+            const token = localStorage.getItem('token');
+            const id = localStorage.getItem('id');
+            axios.delete(`${this.apiUrl}${taskId}`, { headers: { Authorization: `Bearer ${token}` } })
+                .then(response => {
+                if(response.data.status === 'ok') {
                     this.data.status = 'ok'
                 }}).catch(error => (this.data.status = error))
         },
 
         doneTask(taskId) {
-            const id = $cookies.get('todo').substr(2).replace(/"/gm,'');
-            axios.post(`${this.apiUrl}/done`,  {
-                params: {
-                    userId: id,
-                    taskId: taskId,
-                    status: 'done',
-                }
-            }).then(response => {
+            const token = localStorage.getItem('token');
+            const id = localStorage.getItem('id');
+            axios.patch(`${this.apiUrl}${taskId}`, {taskStatus: 'done'}, { headers: { Authorization: `Bearer ${token}` } }).then(response => {
                 if(response.data.ok) {
                     this.data.taskStatus = 'done';
                     this.data.status = 'ok'
                 }}).catch(error => (this.data.status = error))
+        },
+        removedata() {
+            localStorage.removeItem("token");
         },
     },
     mounted() {

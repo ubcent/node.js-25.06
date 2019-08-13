@@ -9,19 +9,24 @@ new Vue({
         }
     },
     methods: {
+
         login() {
             axios.post(this.apiUrl,  {
                     login: this.username.toLowerCase(),
                     password: this.password,
             }).then(response => {
-                if(response.data.url) {
-                window.location.href = response.data.url;
-            } else if(!response.data.url) {
+                if(response.data.result === 'success') {
+                    localStorage.setItem('token', response.data.token);
+                    window.location.href = '/todolist.html';
+            } else if(response.data.result === 'failure') {
                     this.username = '';
                     this.password = '';
-                    this.data = 'Неправильное имя пользователя или пароль';
+                    this.data = response.data.message;
                 } else this.data = response.data}).catch(error => (this.data = error))
         }
+    },
+    mounted() {
+        localStorage.removeItem('token');
     },
 
 });

@@ -6,10 +6,12 @@ new Vue({
             username: '',
             data: '',
             password: '',
+            password2: '',
             email: '',
             firstname: '',
             lastname: '',
             error: '',
+            ok: '',
         }
     },
     methods: {
@@ -18,6 +20,7 @@ new Vue({
                 this.error = 'yes';
                 this.username = '';
                 this.password = '';
+                this.password2 = '';
                 setTimeout( () => {
                     this.error = '';
                     this.newtasktext = '';
@@ -29,14 +32,20 @@ new Vue({
                     params: {
                         login: this.username.toLocaleLowerCase(),
                         password: this.password,
+                        password2: this.password2,
                         firstName: this.firstname,
                         lastName: this.lastname,
                         email: this.email,
                     }
                 }).then(response => {
-                    if(response.data.url) {
-                        alert(response.data.msg);
-                        window.location.href = response.data.url;
+                    if(response.data.msg) {
+                        this.data = response.data.msg;
+                        this.username = '';
+                        this.password = '';
+                        this.password2 = '';
+                        this.email = '';
+                        this.firstname = '';
+                        this.lastname = '';
                     } else this.data = response.data;
                 }).catch(error => (this.data = error))
             }
