@@ -40,6 +40,6 @@ module.exports ={
         if(req.user){
             return next();
         }
-        res.send('/auth');
+        res.redirect('/auth');
     }
 };

@@ -90,4 +90,9 @@ app.get('/auth', (req, res) =>{
 
 app.post('/auth', passport.authHandler);
 
+app.get('/logout',(req, res) =>{
+    req.logout();
+    res.redirect('auth');
+});
+
 app.listen(8888);
