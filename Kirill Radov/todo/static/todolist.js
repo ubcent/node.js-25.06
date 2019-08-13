@@ -17,8 +17,11 @@ new Vue({
                     .then(response => {
                 if(response.data[0]) {
                     this.data = response.data.reverse();
-                } else this.data = '';
-            }).catch(error => (this.data = error))
+                } else this.data = response.data;
+            }).catch(error => {
+                this.data = error;
+                window.location.href = '/index.html';
+            })
         },
 
         newTask() {
