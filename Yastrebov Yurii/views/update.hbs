@@ -1,0 +1,13 @@
+<h3>Редактирование задачи</h3>
+<form method="POST" action="/tasks/update">
+    <h4>Название задачи</h4>
+    <input type="hidden" name="id" value="{{_id}}"/>
+    <input type="text" name="title" value="{{title}}"/><br/>
+    <h4>Приоритет</h4>
+    <select name="priority" value="{{priority}}">
+        <option>Нет</option>
+        <option>Срочная!</option>
+    </select>
+    <br/>
+    <input type="submit" value="Сохранить"/>
+</form>

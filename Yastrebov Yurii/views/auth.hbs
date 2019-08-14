@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Авторизация</title>
+    <style>
+    </style>
+</head>
+<body>
+{{#if error}}
+    <h4>Неверный логин или пароль</h4><br>
+{{/if}}
+<h3>Авторизация</h3><br>
+<form method="POST" action="/auth">
+    <input type="text" name="username" placeholder="Логин:"/><br/>
+    <input type="password" name="password" placeholder="Пароль:"/><br/>
+    <input type="submit" value="Войти"/>
+</form>
