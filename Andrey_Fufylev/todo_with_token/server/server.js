@@ -58,21 +58,6 @@ app.post('/auth', async (req, res) => {
   res.json({result: 'success', token});
 });
 
-app.get('/isAuthorized', async (req, res) => {
-  if (req.headers.authorization) {
-    const [type, token] = req.headers.authorization.split(' ');
-    jwt.verify(token, SECRET, (err, payload) => {
-      if (err) {
-        return res.status(401).json({result: 'Wrong token'});
-      }
-      req.user = payload;
-      res.json({result: 'success'});
-    });
-  } else {
-    res.status(401).json({result: 'No token present'});
-  }
-});
-
 // задачник
 app.use('/tasks', checkToken);
 
@@ -85,18 +70,18 @@ app.get('/tasks', async (req, res) => {
   res.json(tasks);
 });
 
-app.delete('/tasks/remove', async (req, res) => {
+app.delete('/tasks', async (req, res) => {
   const task = await Task.deleteOne({_id: req.body.id});
   res.json(task);
 });
 
-app.post('/tasks/add', async (req, res) => {
+app.post('/tasks', async (req, res) => {
   const task = new Task(req.body);
   const savedTask = await task.save();
   res.json(savedTask);
 });
 
-app.put('/tasks/update', async (req, res) => {
+app.put('/tasks', async (req, res) => {
   const {id, title, description, status} = req.body;
   const task = await Task.updateOne(
       {_id: id},

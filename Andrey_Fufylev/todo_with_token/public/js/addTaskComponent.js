@@ -17,7 +17,7 @@ Vue.component('new_task', {
         title: this.newTaskTitle,
         description: this.newTaskDescription,
       };
-      fetch(`/tasks/add`, {
+      fetch(`/tasks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

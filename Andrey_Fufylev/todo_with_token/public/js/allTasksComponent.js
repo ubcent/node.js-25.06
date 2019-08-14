@@ -25,7 +25,7 @@ Vue.component('AllTasks', {
       }
     },
     remove(id) {
-      fetch(`/tasks/remove`, {
+      fetch(`/tasks`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

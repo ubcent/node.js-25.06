@@ -22,7 +22,7 @@ Vue.component('TaskUpdate', {
         description: this.updatedTaskDescription,
         status: this.updatedTaskStatus,
       };
-      fetch(`/tasks/update`, {
+      fetch(`/tasks`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
