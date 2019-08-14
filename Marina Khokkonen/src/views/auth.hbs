@@ -1,0 +1,9 @@
+{{#if error}}
+    <h4> Неверный логин или пароль</h4>
+{{/if}}
+<h3>Авторизация</h3>
+<form method="POST" action="/auth">
+    <input type="text" name="username" placeholder="User name" />
+    <input type="password" name="password" placeholder="Password" />
+    <input type="submit" />
+</form>
