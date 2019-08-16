@@ -17,19 +17,10 @@ Vue.component('new_task', {
         title: this.newTaskTitle,
         description: this.newTaskDescription,
       };
-      fetch(`/tasks`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': localStorage.getItem('userKey'),
-        },
-        body: JSON.stringify(data),
-      })
-          .then((result) => result.json())
-          .then((data) => {
-            this.$parent.$refs.AllTasks.getAll();
-          })
-          .catch((error) => console.log(error));
+      socket.emit('addTask', data);
+      socket.on('addTask', (data) => {
+        this.$parent.$refs.AllTasks.getAll();
+      });
     },
   },
   template: `

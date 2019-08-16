@@ -1,18 +1,23 @@
 const SECRET = 'The doors are open for those how are bold enough to knock';
-
+const socketIO = require('socket.io');
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const format = require('date-fns/format');
+const http = require('http');
 require(path.resolve(__dirname, 'config', 'db_config'));
 
 const app = express();
+const server = http.Server(app);
+const io = socketIO(server);
+
 const {Task, User} = require('./models');
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use('/', express.static(path.resolve(__dirname, '..', 'public')));
+app.use('/', express.static(path.resolve(__dirname, 'public')));
 
 // Идентификация
 const checkToken = async (req, res, next) => {
@@ -59,7 +64,30 @@ app.post('/auth', async (req, res) => {
 });
 
 // задачник
-app.use('/tasks', checkToken);
+// app.use('/tasks', checkToken);
+
+io.on('connection', (socket) => {
+  // console.log('Someone has connected!');
+
+  socket.on('addTask', async (data) => {
+    const task = new Task(data);
+    const savedTask = await task.save();
+    console.log(savedTask);
+    // Отправляем сообщение всем подключенным юзерам
+    socket.broadcast.emit('addTask', {result: "success"});
+    // Отправляем сообщение себе
+    socket.emit('addTask', {result: "success"});
+  });
+
+  socket.on('online', () => {
+    socket.emit('online', socket.id);
+  });
+
+  socket.on('disconnect', () => {
+    /* delete users[socket.id];
+    socket.broadcast.emit('offline', socket.id);*/
+  });
+});
 
 app.get('/tasks', async (req, res) => {
   const tasks = await Task.find().lean();
@@ -95,4 +123,4 @@ app.put('/tasks', async (req, res) => {
   res.json(task);
 });
 
-app.listen(3000, () => console.log('Listen on port 3000...'));
+server.listen(3000, () => console.log('Listen on port 3000...'));
