@@ -10,7 +10,13 @@ Vue.component('AllTasks', {
   methods: {
     getAll() {
       if (localStorage.getItem('userKey')) {
-        fetch(`/tasks`, {
+        socket.emit('getTasks');
+        socket.on('getTasks', (data) => {
+          if (data.result === 'success') {
+            this.tasks = data.tasks;
+          }
+        });
+        /* fetch(`/tasks`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': localStorage.getItem('userKey'),
@@ -21,11 +27,12 @@ Vue.component('AllTasks', {
               this.tasks = data;
             // console.log(data);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log(error));*/
       }
     },
     remove(id) {
-      fetch(`/tasks`, {
+      socket.emit('removeTask', {id});
+      /* fetch(`/tasks`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -38,7 +45,7 @@ Vue.component('AllTasks', {
             // console.log(data);
             this.getAll();
           })
-          .catch((error) => console.log(error));
+          .catch((error) => console.log(error));*/
     },
   },
   template: `
@@ -46,20 +53,20 @@ Vue.component('AllTasks', {
                 <h3 class="clearfix my-3">All currents tasks</h3>
                 <div class="row mb-2">
 
-                    <span class="col-2 text-center border"> Title </span>
-                    <span class="col-4 text-center border"> Description </span>
-                    <span class="col-2 text-center border"> Status </span>
-                    <span class="col-2 text-center border text-wrap">
+                    <span class="col-sm-2 text-center border"> Title </span>
+                    <span class="col-sm-4 text-center border"> Description </span>
+                    <span class="col-sm-2 text-center border"> Status </span>
+                    <span class="col-sm-2 text-center border text-wrap">
                 <i class="far fa-calendar-alt mr-2"></i> Created / Updated </span>
                 </div>
                 <div v-for="task of tasks" :key="task.id">
                     <div class="row mb-2">
 
-                        <span class="col-2 border"> {{task.title}} </span>
-                        <span class="col-4 border"> {{ task.description }} </span>
-                        <span class="col-2 text-center border"> {{ task.status }} </span>
-                        <span class="col-2 text-center border text-wrap"> {{ task.update }} </span>
-                        <span class="col-1">
+                        <span class="col-sm-2 border"> {{task.title}} </span>
+                        <span class="col-sm-4 border"> {{ task.description }} </span>
+                        <span class="col-sm-2 text-center border"> {{ task.status }} </span>
+                        <span class="col-sm-2 text-center border text-wrap"> {{ task.update }} </span>
+                        <span class="col-sm-1">
                             <i class="far fa-trash-alt" @click="remove(task._id)"></i><span class="mr-3"></span>
                             <i class="fas fa-pen"
                                 @click="$parent.$refs.TaskUpdate.showUpdateForm(task._id, task.title, task.description, task.status)"></i>

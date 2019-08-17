@@ -35,7 +35,7 @@ Vue.component('auth', {
           .then((data) => {
             if (data.result === 'success') {
               const newToken = `JWT ${data.token}`;
-              localStorage.setItem('userKey', newToken);
+              localStorage.setItem(`userKey`, newToken);
               this.setAuthorized();
               this.error = false;
               this.$parent.$refs.AllTasks.getAll();

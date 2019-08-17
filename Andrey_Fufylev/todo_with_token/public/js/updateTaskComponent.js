@@ -22,40 +22,30 @@ Vue.component('TaskUpdate', {
         description: this.updatedTaskDescription,
         status: this.updatedTaskStatus,
       };
-      fetch(`/tasks`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': localStorage.getItem('userKey'),
-        },
-        body: JSON.stringify(data),
-      })
-          .then((result) => result.json())
-          .then((data) => {
-            this.$parent.$refs.AllTasks.getAll();
-            this.swapVisibility();
-          })
-          .catch((error) => console.log(error));
+      socket.emit('updateTask', data);
+      socket.on('updateTask', (data) => {
+        if (data.result === 'success') {
+          this.$parent.$refs.AllTasks.getAll();
+          this.$parent.showTasks = true;
+          this.$parent.showUpdateForm = false;
+        }
+      });
     },
     swapVisibility() {
       this.$parent.showTasks = !this.$parent.showTasks;
       this.$parent.showUpdateForm = !this.$parent.showUpdateForm;
-    },
-    showTasks() {
     },
   },
   template: `
             <div class="task-update">
                 <h3 class="clearfix my-3">Update Form</h3>
                 <div class="row mt-3">
-                    <span class="col-1 text-center border"> # ID </span>
                     <span class="col-2 text-center border"> Title </span>
                     <span class="col-4 text-center border"> Description </span>
                     <span class="col-2 text-center border"> Status </span>
 
                 </div>
                 <div class="row mb-3">
-                    <span class="col-1 text-center border"> {{ id }} </span>
                     <textarea class="col-2 border" name="textarea" v-model="updatedTaskTitle"></textarea>
                     <textarea class="col-4 border" name="textarea" v-model="updatedTaskDescription"></textarea>
                     <select class="col-2 text-center border" name="source" v-model="updatedTaskStatus">

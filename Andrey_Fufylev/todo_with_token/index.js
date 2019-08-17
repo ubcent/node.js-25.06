@@ -1,18 +1,23 @@
 const SECRET = 'The doors are open for those how are bold enough to knock';
-
+const socketIO = require('socket.io');
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const format = require('date-fns/format');
+const http = require('http');
 require(path.resolve(__dirname, 'config', 'db_config'));
 
 const app = express();
+const server = http.Server(app);
+const io = socketIO(server);
+
 const {Task, User} = require('./models');
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use('/', express.static(path.resolve(__dirname, '..', 'public')));
+app.use('/', express.static(path.resolve(__dirname, 'public')));
 
 // Идентификация
 const checkToken = async (req, res, next) => {
@@ -59,7 +64,71 @@ app.post('/auth', async (req, res) => {
 });
 
 // задачник
-app.use('/tasks', checkToken);
+// app.use('/tasks', checkToken);
+
+io.on('connection', (socket) => {
+  console.log('Someone has connected!');
+  const token = socket.handshake.query.token;
+  console.log(token);
+  socket.on('getTasks', async (data) => {
+    const tasks = await Task.find().lean();
+    tasks.forEach((elem) => {
+      const newDate = format(elem.update, 'YYYY-MM-DD HH:mm');
+      Object.assign(elem, {update: newDate});
+    });
+    if (tasks) {
+      socket.broadcast.emit('getTasks', {result: 'success', tasks});
+      socket.emit('getTasks', {result: 'success', tasks});
+    }
+  });
+
+  socket.on('addTask', async (data) => {
+    
+    const task = new Task(data);
+    const savedTask = await task.save();
+    if (savedTask) {
+      socket.broadcast.emit('tasks', {result: 'success'});
+      socket.emit('tasks', {result: 'success'});
+    }
+  });
+
+  socket.on('removeTask', async (data) => {
+    const task = await Task.findByIdAndDelete(data.id);
+    if (task) {
+      socket.broadcast.emit('tasks', {result: 'success'});
+      socket.emit('tasks', {result: 'success'});
+    }
+  });
+
+  socket.on('updateTask', async (data) => {
+    /* const task = await Task.findByIdAndUpdate(data.id, {
+      $set: data.updatedTask,
+    });*/
+    const {id, title, description, status} = data;
+    const task = await Task.updateOne(
+        {_id: id},
+        {
+          title: title,
+          description: description,
+          status: status,
+          update: new Date(),
+        }
+    );
+    if (task) {
+      socket.broadcast.emit('updateTask', {result: 'success'});
+      socket.emit('updateTask', {result: 'success'});
+    }
+  });
+
+  socket.on('online', () => {
+    socket.emit('online', socket.id);
+  });
+
+  socket.on('disconnect', () => {
+    /* delete users[socket.id];
+    socket.broadcast.emit('offline', socket.id);*/
+  });
+});
 
 app.get('/tasks', async (req, res) => {
   const tasks = await Task.find().lean();
@@ -95,4 +164,4 @@ app.put('/tasks', async (req, res) => {
   res.json(task);
 });
 
-app.listen(3000, () => console.log('Listen on port 3000...'));
+server.listen(3000, () => console.log('Listen on port 3000...'));
