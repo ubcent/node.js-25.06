@@ -67,16 +67,57 @@ app.post('/auth', async (req, res) => {
 // app.use('/tasks', checkToken);
 
 io.on('connection', (socket) => {
-  // console.log('Someone has connected!');
+  console.log('Someone has connected!');
+  const token = socket.handshake.query.token;
+  console.log(token);
+  socket.on('getTasks', async (data) => {
+    const tasks = await Task.find().lean();
+    tasks.forEach((elem) => {
+      const newDate = format(elem.update, 'YYYY-MM-DD HH:mm');
+      Object.assign(elem, {update: newDate});
+    });
+    if (tasks) {
+      socket.broadcast.emit('getTasks', {result: 'success', tasks});
+      socket.emit('getTasks', {result: 'success', tasks});
+    }
+  });
 
   socket.on('addTask', async (data) => {
+    
     const task = new Task(data);
     const savedTask = await task.save();
-    console.log(savedTask);
-    // Отправляем сообщение всем подключенным юзерам
-    socket.broadcast.emit('addTask', {result: "success"});
-    // Отправляем сообщение себе
-    socket.emit('addTask', {result: "success"});
+    if (savedTask) {
+      socket.broadcast.emit('tasks', {result: 'success'});
+      socket.emit('tasks', {result: 'success'});
+    }
+  });
+
+  socket.on('removeTask', async (data) => {
+    const task = await Task.findByIdAndDelete(data.id);
+    if (task) {
+      socket.broadcast.emit('tasks', {result: 'success'});
+      socket.emit('tasks', {result: 'success'});
+    }
+  });
+
+  socket.on('updateTask', async (data) => {
+    /* const task = await Task.findByIdAndUpdate(data.id, {
+      $set: data.updatedTask,
+    });*/
+    const {id, title, description, status} = data;
+    const task = await Task.updateOne(
+        {_id: id},
+        {
+          title: title,
+          description: description,
+          status: status,
+          update: new Date(),
+        }
+    );
+    if (task) {
+      socket.broadcast.emit('updateTask', {result: 'success'});
+      socket.emit('updateTask', {result: 'success'});
+    }
   });
 
   socket.on('online', () => {

@@ -18,9 +18,6 @@ Vue.component('new_task', {
         description: this.newTaskDescription,
       };
       socket.emit('addTask', data);
-      socket.on('addTask', (data) => {
-        this.$parent.$refs.AllTasks.getAll();
-      });
     },
   },
   template: `
@@ -29,12 +26,12 @@ Vue.component('new_task', {
                 <div class="row mb-2">
                     <div class="col-3">
                         <label for="title">Title</label><br>
-                        <textarea name="textarea" rows="5" cols="25" id="title" v-model="newTaskTitle">
+                        <textarea name="textarea" rows="2" cols="25" id="title" v-model="newTaskTitle">
                     </textarea>
                     </div>
                     <div class="col-6">
                         <label for="description">Description</label><br>
-                        <textarea name="textarea" rows="5" cols="60" id="description"
+                        <textarea name="textarea" rows="2" cols="60" id="description"
                                   v-model="newTaskDescription"></textarea>
                     </div>
                 </div>
