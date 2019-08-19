@@ -9,7 +9,7 @@ const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const habrRoute = require('./routes/habr');
 const todoMysql = require('./routes/todolist/mysql/root');
-const todoMongo = require('./routes/todolist/mongo/root-rest');
+const todoMongo = require('./routes/todolist/mongo/root');
 
 mongoose.connect('mongodb://10.30.1.59:27017/todo', { useNewUrlParser: true, useFindAndModify: false }, (err) => {
     if(err) throw err;

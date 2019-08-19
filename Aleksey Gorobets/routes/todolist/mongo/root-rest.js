@@ -29,7 +29,7 @@ const checkToken = async (req, res, next) => {
     }
 };
 
-router.use('/getalltasks', checkToken);
+//router.use('/getalltasks', checkToken);
 
 router.get('/getalltasks', async (req, res) => {
     const alltasks = await Task.find().lean();
@@ -75,6 +75,13 @@ router.get('/register', (req, res) => {
 });
 
 // Аутентификация
+router.get('/auth', (req, res) => {
+    if(req.user) {
+        return res.redirect('http://localhost:8888/todomongo/getalltasks');
+    }
+    res.render('auth', { error: !! req.query.error });
+});
+
 router.post('/auth', async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({email: username});

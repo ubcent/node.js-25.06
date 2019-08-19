@@ -116,7 +116,8 @@
         console.log(arrChangedTasks);
     }
     function updateTasks() {
-        const urlUpdate = 'http://localhost:8888/todomysql/updatetasks';
+        const urlUpdate = 'http://localhost:8888/todomongo/updatetasks';
+        console.log(arrChangedTasks);
         if (arrChangedTasks.length > 0) {
             fetch(urlUpdate, {
                 method: 'POST',

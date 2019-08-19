@@ -1,3 +1,4 @@
+const http = require('http');
 const path = require('path');
 const express = require('express');
 const router = express.Router();
@@ -13,6 +14,7 @@ router.use('/getalltasks', passport.checkAuthenticated);
 router.use(express.static(path.join(__dirname, 'public')));
 
 router.get('/getalltasks', async (req, res) => {
+    console.log('getalltasks');
     const alltasks = await Task.find().lean();
     alltasks.forEach((item) => {
        item['updated'] = moment(item['updated']).format("HH:mm:ss YYYY-MM-DD");
@@ -43,10 +45,16 @@ router.post('/addtask', (req, res) => {
 });
 
 
-
 router.post('/deletetask', async (req, res) => {
     await Task.deleteMany({"num" : { $in: req.body}});
     res.redirect('http://localhost:8888/todomongo/getalltasks');
+});
+
+router.post('/updatetasks', async (req, res) => {
+    console.log(req.body);
+    const updatedTasks = await Task.updateOne(req.body);
+    res.redirect('http://localhost:8888/todomongo/getalltasks');
+    //res.send(updatedTasks);
 });
 
 router.get('/register', (req, res) => {
