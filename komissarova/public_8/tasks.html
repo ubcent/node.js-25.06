@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do Interface</title>
+    <link rel="shortcut icon" href="http://s1.iconbird.com/ico/2013/6/280/w512h5121371488807tasks512.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.7/css/mdb.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-3">
+    <button id="btn_logout" class="btn btn-default my-5">Sign Out</button>
+    <h2 class="text mb-3">A ToDo List App</h2>
+    <div class="row">
+        <textarea id="newtask" name="newtask" rows="5" cols="50" placeholder="add new task" class="p-2"></textarea><br>
+    </div>
+    <button id="addTask" class="btn btn-primary my-3">Add Task</button>
+    <h2 class="text mt-5">Added Task</h2>
+    <div class="my-3" id="tasks">
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  window.onload = () => {
+    const logout_btn = document.querySelector('#btn_logout');
+    logout_btn.addEventListener('click', () => logout()); 
+    function logout() {
+      localStorage.removeItem('userKey'); 
+      window.location.href = '/'; 
+    }
+    const addBtn = document.querySelector('#addTask');
+    addBtn.addEventListener('click', () => add()); 
+
+    const socket = io.connect('http://localhost:8888', {
+      query: {
+        token: localStorage.getItem('userKey'), 
+      },
+    });
+
+    socket.on('authentication', (data) => { 
+      if (data === 'success') { 
+        getAll();
+      } else { 
+        localStorage.removeItem('userKey'); 
+        window.location.href = '/';        
+      }
+    });
+
+    socket.on('taskActionOnSuccess', (data) => { 
+      if (data.result === 'success') {
+        window.location.reload();
+      } else {
+        console.log('Error');
+      }
+    });
+
+    function getAll() { 
+      const block = document.querySelector('#tasks');
+      socket.emit('getAll');
+      socket.on('getAll', (tasks) => {
+        for (let task of tasks) {
+          const item = `
+                    <div class="row">
+                        <span data-id="${task.task_id}" class="col-1 text-center border">${task.task_id}</span>
+                        <input id="task-${task.task_id}" class="col-6 text-left border" value="${task.task_description}"/>
+                        <span class="col-1">
+                            <button id="del_btn" data-id="${task.task_id}" class="btn btn-primary py-1 px-2">remove</button>
+                        </span>
+                        <span class="col-1">
+                            <button id="update_btn" data-id="${task.task_id}" class="btn btn-primary py-1 px-2">update</button>
+                        </span>
+                    </div>
+              `;
+          block.insertAdjacentHTML('beforeend', item);
+        }
+        const del = document.querySelectorAll('#del_btn');
+        const update = document.querySelectorAll('#update_btn');
+        for (let i = 0; i < del.length; i++) {
+          del[i].addEventListener('click', event => toRemove(+event.target.dataset.id));
+          update[i].addEventListener('click', event => toUpdate(+event.target.dataset.id));
+        }
+      });
+    }
+
+    function add() {
+      const newTask = document.querySelector('#newtask').value;
+      socket.emit('addTask', newTask);
+    }
+
+    function toRemove(id) {
+      socket.emit('removeTask', id);
+    }
+
+    function toUpdate(id) {
+      const selector = `#task-${id}`;
+      const description = document.querySelector(selector).value;
+      socket.emit('updateTask', {id, description});
+    }
+  }
+</script>
+</body>

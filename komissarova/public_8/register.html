@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="shortcut icon" href="http://s1.iconbird.com/ico/2013/6/280/w512h5121371488807tasks512.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.7/css/mdb.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="my-3 row ">
+        <div class="col-6 border p-5">
+            <p class="h4 mb-4">Sign Up</p>
+            <input id="first_name" type="text" class="form-control mb-2" placeholder="First name"/><br/>
+            <input id="last_name" type="text" class="form-control mb-2" placeholder="Last name"/><br/>
+            <input id="user_email" type="text" name="username" class="form-control mb-4" placeholder="Email"/><br/>
+            <input id="user_password" type="password" name="password" class="form-control mb-4"
+                   placeholder="Password"/><br/>
+            <p class="text text-center text-warning error_message"></p>
+            <button class="btn btn-primary btn_register mb-3">Sign Up</button>
+            <p class="text text-center mb-3">Already a member?
+                <a href="/" class="ml-3">Sign In</a>
+            </p>
+        </div>
+    </div>
+</div>
+<script>
+  
+  window.onload = () => {
+    const btn = document.querySelector('.btn_register');
+    btn.addEventListener('click', () => register()); 
+
+    function register() {
+      const firstName = document.querySelector('#first_name').value;
+      const lastName = document.querySelector('#last_name').value;
+      const email = document.querySelector('#user_email').value;
+      const password = document.querySelector('#user_password').value;
+
+      if (email && password) { 
+        fetch(`/register`, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({firstName, lastName, email, password}) 
+        })
+          .then(result => result.json()) 
+          .then(data => {
+            if (data.result === 'success') {
+              window.location.href = '/';
+            } else { 
+              document.querySelector('.error_message').textContent = data.result;
+            }
+          })
+          .catch(err => console.error(err)) 
+      } else {
+        document.querySelector('.error_message').textContent = 'Please enter Email and Password!';
+      }
+    }
+  }
+</script>
+</body>
+</html>

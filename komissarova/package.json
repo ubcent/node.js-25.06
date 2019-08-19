@@ -20,8 +20,10 @@
     "handlebars": "^4.1.2",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.17.1",
+    "nodemon": "^1.19.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "socket.io": "^2.2.0"
   }
 }
