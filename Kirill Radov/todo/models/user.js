@@ -11,6 +11,7 @@ const userSchema = new Schema ({
     login: {type: String},
     password: {type: String},
     email: {type: String},
+    banned: {type: Boolean},
 });
 
 userSchema.pre('save', async function (next) {

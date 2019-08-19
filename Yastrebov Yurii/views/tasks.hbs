@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>TODO list</title>
+    <style>
+        .completed {
+            color: green;
+        }
+        .urgent {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h5><a href="/logout">Выход</a></h5>
+<form method="POST" action="/tasks/add">
+    <input name="title" type="text" placeholder="Название задачи:"/><br/>
+    <input type="submit" value="Добавить задачу"/>
+</form>
+    <ul>
+        {{#each tasks}}
+            <li>
+                {{#if this.priority}}<span class="urgent"> Срочная!</span>{{/if}}
+                {{#if this.completed}}<span class="completed"> Выполнено</span>{{/if}}
+                <a href="/tasks/{{this._id}}/edit">{{this.title}}</a>
+                <form method="POST" action="/tasks/complete">
+                    <input type="hidden" name="id" value="{{this._id}}"/>
+                    <input type="submit" value="Выполнено"/>
+                </form>
+                <form method="POST" action="/tasks/delete">
+                    <input type="hidden" name="id" value="{{this._id}}"/>
+                    <input type="submit" value="Удалить"/>
+                </form>
+            </li>
+        {{/each}}
+    </ul>
+</body>
+</html>
+
+
+

@@ -19,7 +19,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-const Task = require('./modules/task');
+const Task = require('./models/task');
 
 const app = express();
 
