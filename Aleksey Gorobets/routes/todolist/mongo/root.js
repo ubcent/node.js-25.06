@@ -1,4 +1,3 @@
-const http = require('http');
 const path = require('path');
 const express = require('express');
 const router = express.Router();
@@ -7,11 +6,13 @@ const Task = require('./model/taskMongo.js');
 const User = require('./model/user');
 const passport = require('./passport');
 
+
 router.use(passport.initialize);
 router.use(passport.session);
 router.use('/getalltasks', passport.checkAuthenticated);
 
 router.use(express.static(path.join(__dirname, 'public')));
+
 
 router.get('/getalltasks', async (req, res) => {
     console.log('getalltasks');

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>NodeJS kurs 25.06</title>
+    <script src="/socket.io/socket.io.js"></script>
 <!--    <link rel="icon" href="data:,">-->
 </head>
 <body>
@@ -11,5 +12,12 @@
     <li><a href="http://localhost:8888/todomysql">Les5. MySQL. ДЗ - Реализация TODO List на MySQL</a></li>
     <li><a href="http://localhost:8888/todomongo">Les5. MySQL. ДЗ - Реализация TODO List на MongoDB</a></li>
 </ul>
+<script>
+    const socket = io.connect('http://localhost:8888');
+    socket.emit('message', {text: 'Hello world'});
+    socket.on('notification', (data) => {
+        console.log('notification', data);
+    });
+</script>
 </body>
 </html>

@@ -10,6 +10,9 @@ const mongoose = require('mongoose');
 const habrRoute = require('./routes/habr');
 const todoMysql = require('./routes/todolist/mysql/root');
 const todoMongo = require('./routes/todolist/mongo/root');
+const Task = require('./routes/todolist/mongo/model/taskMongo');
+const http = require('http');
+const socketIO = require('socket.io');
 
 mongoose.connect('mongodb://10.30.1.59:27017/todo', { useNewUrlParser: true, useFindAndModify: false }, (err) => {
     if(err) throw err;
@@ -17,6 +20,8 @@ mongoose.connect('mongodb://10.30.1.59:27017/todo', { useNewUrlParser: true, use
 } );
 
 const app = express();
+const server = http.Server(app);
+const io = socketIO(server);
 
 app.engine('hbs', consolidate.handlebars);
 app.set('view engine', 'hbs');
@@ -46,6 +51,17 @@ app.use('/habr', habrRoute);
 app.use('/todomysql', todoMysql);
 app.use('/todomongo', todoMongo);
 
+io.on('connection', (socket) => {
+    console.log('Someone has connected');
+    socket.on('message', (data) => {
+        console.log('message', data);
+    });
+
+    socket.emit('notification', {message: 'Yoy are big'});
+});
+
+
+
 app.use(function(req, res, next) {
     next(createError(404));
 });
@@ -57,4 +73,6 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-app.listen(8888);
+server.listen(8888, () => {
+    console.log('Server has been started!');
+});
