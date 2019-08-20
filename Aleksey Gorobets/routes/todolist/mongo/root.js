@@ -6,9 +6,10 @@ const Task = require('./model/taskMongo.js');
 const User = require('./model/user');
 const passport = require('./passport');
 
- router.use(passport.initialize());
- router.use(passport.session());
- router.use('getalltasks', passport.checkAuthenticated);
+
+router.use(passport.initialize);
+router.use(passport.session);
+router.use('/getalltasks', passport.checkAuthenticated);
 
 router.use(express.static(path.join(__dirname, 'public')));
 
@@ -42,37 +43,43 @@ router.post('/addtask', (req, res) => {
             });
 });
 
+
 router.post('/deletetask', async (req, res) => {
-    console.log(req.body);
     await Task.deleteMany({"num" : { $in: req.body}});
     res.redirect('http://localhost:8888/todomongo/getalltasks');
 });
 
- router.get('/register', async (req, res) => {
-     if(req.user) {
-         return res.redirect('/todomongo/getalltasks');
-     }
-     res.render('register');
- });
+router.post('/updatetasks', async (req, res) => {
+    const updatedTasks = await Task.updateOne({"num" : { $eq: req.body[0][1]}}, {"status": req.body[0][0]});
+    res.redirect('http://localhost:8888/todomongo/getalltasks');
+});
 
- router.post('/register', async (req, res) => {
-   const user = new User(req.body);
-   const savedUser = await user.save();
-   res.redirect('/todomongo/getalltasks');
- });
+router.get('/register', (req, res) => {
+    if(req.user) {
+     console.log(req.user);
+     return res.redirect('http://localhost:8888/todomongo/getalltasks');
+    }
+    res.render('register');
+});
 
- router.get('/auth', (req, res) => {
-     if(req.user) {
-         return res.redirect('/todomongo/getalltasks');
-     }
-     res.render('auth', { error: !!req.query.error });
- });
+router.post('/register', async (req, res) => {
+    const user = new User(req.body);
+    const savedUser = await user.save();
+    res.redirect('http://localhost:8888/todomongo/getalltasks');
+});
+
+router.get('/auth', (req, res) => {
+    if(req.user) {
+     return res.redirect('http://localhost:8888/todomongo/getalltasks');
+    }
+    res.render('auth', { error: !! req.query.error });
+});
 
 router.post('/auth', passport.authHandler);
 
 router.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/auth');
+    res.redirect('http://localhost:8888/todomongo/auth');
 });
 
 module.exports = router;
