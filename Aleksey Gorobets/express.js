@@ -10,18 +10,23 @@ const mongoose = require('mongoose');
 const habrRoute = require('./routes/habr');
 const todoMysql = require('./routes/todolist/mysql/root');
 const todoMongo = require('./routes/todolist/mongo/root');
-const Task = require('./routes/todolist/mongo/model/taskMongo');
+const connect = require('./routes/todolist/mongo/socketTodo');
 const http = require('http');
 const socketIO = require('socket.io');
+
+const app = express();
+const server = http.Server(app);
+const io = socketIO(server);
+
+io.on('connection', (socket) => {
+    console.log('Someone has connected');
+    connect(socket);
+});
 
 mongoose.connect('mongodb://10.30.1.59:27017/todo', { useNewUrlParser: true, useFindAndModify: false }, (err) => {
     if(err) throw err;
     console.log('Successfully connected to mongoDB');
 } );
-
-const app = express();
-const server = http.Server(app);
-const io = socketIO(server);
 
 app.engine('hbs', consolidate.handlebars);
 app.set('view engine', 'hbs');
@@ -50,16 +55,6 @@ app.use('/', (req, res, next) => {
 app.use('/habr', habrRoute);
 app.use('/todomysql', todoMysql);
 app.use('/todomongo', todoMongo);
-
-io.on('connection', (socket) => {
-    console.log('Someone has connected');
-    socket.on('message', (data) => {
-        console.log('message', data);
-    });
-
-    socket.emit('notification', {message: 'Yoy are big'});
-});
-
 
 
 app.use(function(req, res, next) {

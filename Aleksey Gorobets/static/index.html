@@ -12,12 +12,7 @@
     <li><a href="http://localhost:8888/todomysql">Les5. MySQL. ДЗ - Реализация TODO List на MySQL</a></li>
     <li><a href="http://localhost:8888/todomongo">Les5. MySQL. ДЗ - Реализация TODO List на MongoDB</a></li>
 </ul>
-<script>
-    const socket = io.connect('http://localhost:8888');
-    socket.emit('message', {text: 'Hello world'});
-    socket.on('notification', (data) => {
-        console.log('notification', data);
-    });
-</script>
+
+
 </body>
 </html>

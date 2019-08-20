@@ -39,6 +39,12 @@
 </div>
 
 <script>
+    const socket = io('http://localhost:8888');
+
+    socket.on('connect_error', function(err) {
+        console.log('Error connecting to server');
+    });
+
     function addTask() {
         const payload = {
             title: $('#modalInput').val(),
@@ -110,15 +116,17 @@
     }
 
     var arrChangedTasks = [];
+    var onlineArr = [];
     function saveChangeStatus(elem) {
         const num = $(elem).attr('data-num').slice(0,1);
         const status = elem.options[elem.selectedIndex].value;
         arrChangedTasks.push([status, num]);
-        console.log(arrChangedTasks);
+        onlineArr.push([status, num]);
+        socket.emit('message', onlineArr);
+        onlineArr = [];
     }
     function updateTasks() {
         const urlUpdate = 'http://localhost:8888/todomongo/updatetasks';
-        console.log(arrChangedTasks);
         if (arrChangedTasks.length > 0) {
             fetch(urlUpdate, {
                 method: 'POST',
@@ -132,7 +140,8 @@
                     return result.text();
                 })
                 .then((data) => {
-                    alert('Были обновлены записи: ' + data);
+                    $('#list-task').empty();
+                    $('#list-task').html(data);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -142,7 +151,11 @@
             alert('Задания не были изменены')
         }
     }
-    
+
+    socket.on('message', (data) => {
+        $(`[data-num="${data[0][1]}"]`).val(`${data[0][0]}`);
+    });
 </script>
+
 </body>
 </html>
