@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="/socket.io/socket.io.js"></script>
+    <title>Document</title>
+</head>
+<body>
+<h3>Geekgram</h3>
+<ul id="usersList"></ul>
+<ul id="messagesList"></ul>
+<form>
+    <input type="text" placeholder="author" id="author" /><br/>
+    <input type="text" placeholder="to" id="to" /><br/>
+    <textarea placeholder="text" id="text"></textarea><br/>
+    <button id="send">Send</button>
+</form>
+<script>
+  const $messagesList = document.querySelector('#messagesList');
+  const $usersList = document.querySelector('#usersList');
+  const $author = document.querySelector('#author');
+  const $to = document.querySelector('#to');
+  const $text = document.querySelector('#text');
+  const $send = document.querySelector('#send');
+  const socket = io.connect('http://localhost:8888');
+  fetch('/online')
+    .then(response => response.json())
+    .then(users => {
+      Object.keys(users).forEach(id => {
+        var $li = document.createElement('li');
+        $li.id = `user-${id}`;
+        $li.textContent = `${users[id]} (${id})`;
+        $usersList.appendChild($li);
+      });
+    });
+  fetch('/messages')
+    .then(response => response.json())
+    .then(messages => {
+      messages.forEach(data => {
+        var $li = document.createElement('li');
+        $li.textContent = `${data.author} (${data.created}): ${data.text}`;
+        $messagesList.appendChild($li);
+      });
+    });
+  $send.addEventListener('click', (event) => {
+    socket.emit('message', {
+      author: $author.value,
+      text: $text.value,
+      to: $to.value,
+    });
+    $text.value = '';
+    event.preventDefault();
+  });
+  socket.on('message', (data) => {
+    var $li = document.createElement('li');
+    $li.textContent = `${data.author} (${data.created}): ${data.text}`;
+    $messagesList.appendChild($li);
+  });
+  socket.on('offline', (id) => {
+    const user = document.querySelector(`#user-${id}`);
+    if(user) {
+      user.remove();
+    }
+  });
+  socket.on('online', (user) => {
+    var $li = document.createElement('li');
+    $li.id = `user-${user.id}`;
+    $li.textContent = `${user.name} (${user.id})`;
+    $usersList.appendChild($li);
+  });
+</script>
+</body>
+</html>
