@@ -6,8 +6,7 @@ mongoose.connection = require('./models/connection');
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const Task = require('./models/task_homework');
-const User = require('./models/user');
+const { Task, User } = require('./models');
 const passport = require('./passport');
 
 const app = express();
